@@ -1,9 +1,13 @@
 <section data-ng-controller="QuestionsController" data-ng-init="findOne()">
     <h2>{{question.content}}</h2>
-    <a class="btn" href="/#!/questions/{{question._id}}/answer">
-    	<i class="icon-edit"></i>
-    </a>
-    <div ng-repeat="answer in question.answers">
-    	<span>{{answer}}</span>
+    <div data-ng-show="global.user.type == 'Student'">
+    	<a class="btn" href="/#!/questions/{{question._id}}/answer">Answer</a>
     </div>
+    <div data-ng-show="global.user.type == 'Professor'">
+    	<a class="btn" href="/#!/questions/{{question._id}}/edit">Edit</a>
+    </div>
+    <h3>Answers</h3>
+    <ul ng-repeat="answer in question.answers">
+    	<li class="answer">{{answer}}</li>
+    </ul>
 </section>

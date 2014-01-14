@@ -38,7 +38,7 @@ exports.article = {
  */
 exports.question = {
     hasAuthorization: function(req, res, next) {
-        if (req.question.user.id != req.user.id) {
+        if (req.user.type !== 'Student') {
             return res.send(401, 'User is not authorized');
         }
         next();

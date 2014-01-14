@@ -22,7 +22,6 @@ angular.module('mean.questions').controller('QuestionsController', ['$scope', '$
         Questions.get({
             questionId: $routeParams.questionId
         }, function(question) {
-            debugger;
             $scope.question = question;
             $scope.answer = '';
         });
