@@ -19,6 +19,7 @@ var QuestionSchema = new Schema({
         default: '',
         trim: true
     },
+    answers: [String],
     user: {
         type: Schema.ObjectId,
         ref: 'User'
