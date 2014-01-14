@@ -1,0 +1,16 @@
+<section data-ng-controller="QuestionsController">
+    <h2>Pose a question </h2>
+    <form class="form-horizontal" data-ng-submit="create()">
+        <div class="control-group">
+            <label class="control-label" for="content">Question</label>
+            <div class="controls">
+                <input type="text" data-ng-model="content" id="content" placeholder="Enter question here..." required>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <input type="submit" class="btn">
+            </div>
+        </div>
+    </form>
+</section>
