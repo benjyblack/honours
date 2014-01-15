@@ -2,7 +2,7 @@ angular.module('mean.questions').controller('QuestionsCreateController', ['$scop
     $scope.global = Global;
 
     $scope.type = 'text';
-    $scope.correctanswer = '';
+    $scope.correctanswer = 'Two';
     $scope.possibleanswers = [
         { content: 'One' },
         { content: 'Two' }
