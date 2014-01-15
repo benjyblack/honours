@@ -19,6 +19,8 @@ var QuestionSchema = new Schema({
         default: '',
         trim: true
     },
+    correctanswer: Schema.Types.Mixed,
+    possibleanswers: Schema.Types.Mixed,
     answers: [String],
     user: {
         type: Schema.ObjectId,

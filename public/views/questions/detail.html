@@ -1,10 +1,11 @@
-<section data-ng-controller="QuestionsController" data-ng-init="findOne()">
+<section data-ng-controller="QuestionsDetailController" data-ng-init="findOne()">
     <h2>{{question.content}}</h2>
     <div data-ng-show="global.user.type == 'Student'">
     	<a class="btn" href="/#!/questions/{{question._id}}/answer">Answer</a>
     </div>
     <div data-ng-show="global.user.type == 'Professor'">
     	<a class="btn" href="/#!/questions/{{question._id}}/edit">Edit</a>
+        <a class="btn" href="/#!" data-ng-click="delete()">Delete</a>
     </div>
     <h3>Answers</h3>
     <ul ng-repeat="answer in question.answers">

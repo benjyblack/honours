@@ -75,8 +75,8 @@ module.exports = function(app, passport, auth) {
     app.get('/questions', questions.all);
     app.post('/questions', auth.requiresLogin, questions.create);
     app.get('/questions/:questionId', questions.show);
-    app.put('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorization, questions.update);
-    app.del('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorization, questions.destroy);
+    app.put('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToEdit, questions.update);
+    app.del('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToDelete, questions.destroy);
 
     //Finish with setting up the questionId param
     app.param('questionId', questions.question);

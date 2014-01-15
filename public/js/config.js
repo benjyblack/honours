@@ -24,7 +24,7 @@ angular.module('mean').config(['$routeProvider',
             templateUrl: 'views/questions/answer.html'
         }).
         when('/questions/:questionId', {
-            templateUrl: 'views/questions/view.html'
+            templateUrl: 'views/questions/detail.html'
         }).
         when('/', {
             templateUrl: 'views/index.html'
