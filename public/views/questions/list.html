@@ -1,6 +1,6 @@
 <section data-ng-controller="QuestionsListController" data-ng-init="find()">
 	<ul class="questions unstyled">
-		<li data-ng-repeat="question in questions">
+		<li data-ng-repeat="question in questions track by $index">
 			<h2><a data-ng-href="#!/questions/{{question._id}}">{{question.content}}</a></h2>
 		</li>
 	</ul>

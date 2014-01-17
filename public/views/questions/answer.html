@@ -6,17 +6,39 @@
 				<label id="content">{{question.content}}</label>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="answer">Answer</label>
-
-			<div class="controls">
-				<textarea data-ng-model="answer" id="answer" cols="30" rows="10" placeholder="Answer">
-				</textarea>
+		<div class="control-group" ng-switch on="question.type">
+			<div ng-switch-when="text">
+				<label class="control-label" for="answer-text">Answer</label>
+				<div class="controls">
+					<textarea data-ng-model="$parent.answer" id="answer-text" cols="30" rows="10" placeholder="Answer">
+					</textarea>
+				</div>
 			</div>
+			<div ng-switch-when="truefalse">
+	            <label class="control-label" for="answer-truefalse">Answer</label>
+	            <div class="controls">
+	                <div class="btn-group" id="answer-truefalse" data-toggle="buttons">
+	                    <label class="btn">
+	                        <input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="true" id="answer-true"> True
+	                    </label>
+	                    <label class="btn">
+	                        <input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="false" id="answer-false"> False
+	                    </label>
+	                </div>
+	            </div>
+        	</div>
+        	<div ng-switch-when="multiplechoice">
+                <label class="control-label" for="answer-multiplechoice">Possible Answers</label>
+                <div class="controls">
+                    <div ng-repeat="possibleanswer in $parent.question.possibleanswers track by $index">
+                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.answer" value="{{possibleanswer.content}}"> {{possibleanswer.content}}
+                    </div>
+                </div>
+            </div>
 		</div>
 		<div class="control-group">
 			<div class="controls">
-				<input type="submit" class="btn">
+				<input type="submit" class="btn" ng-disabled="answer.length==0">
 			</div>
 		</div>
 	</form>

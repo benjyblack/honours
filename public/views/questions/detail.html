@@ -18,7 +18,7 @@
         <span>{{question.correctanswer}}
     </div>
     <h3>Answers</h3>
-    <ul ng-repeat="answer in question.answers">
+    <ul ng-repeat="answer in question.answers track by $index">
     	<li class="answer">{{answer}}</li>
     </ul>
 </section>
