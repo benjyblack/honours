@@ -2,19 +2,19 @@ angular.module('mean.questions').controller('QuestionsCreateController', ['$scop
     $scope.global = Global;
 
     $scope.type = 'text';
-    $scope.correctanswer = 'Two';
-    $scope.possibleanswers = [
-        { content: 'One' },
-        { content: 'Two' }
-    ];
+    $scope.possibleanswers = [{ content: '' }];
 
     $scope.create = function() {
         var question = new Questions({
             content: this.content,
             type: this.type,
-            correctanswer: this.correctanswer,
-            possibleanswers: this.possibleanswers
+            correctanswer: this.correctanswer
         });
+
+        // only add possible answers if the question is a multiple choice question
+        if (this.type === "multiplechoice")
+            question.possibleanswers = this.possibleanswers;
+
         question.$save(function(response) {
             $location.path('questions/' + response._id);
         });
