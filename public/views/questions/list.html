@@ -4,5 +4,5 @@
 			<h2><a data-ng-href="#!/questions/{{question._id}}">{{question.content}}</a></h2>
 		</li>
 	</ul>
-	<h1 data-ng-hide="!questions || questions.length">No questions yet. <br> Why don't you <a href="/#!/questions/create">Create One</a>?</h1>
+	<h1 data-ng-hide="global.user.type == 'Student' || !questions || questions.length">No questions yet. <br> Why don't you <a href="/#!/questions/create">Create One</a>?</h1>
 </section>

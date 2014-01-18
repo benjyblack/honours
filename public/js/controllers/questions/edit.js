@@ -6,7 +6,6 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
             questionId: $routeParams.questionId
         }, function(question) {
             $scope.question = question;
-            $scope.answer = '';
         });
     };
 
@@ -14,7 +13,7 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
         var question = $scope.question;
 
         // Add answer
-        question.answers.push($scope.answer);
+        question.answers.push({ content: $scope.answer, isNew: true });
 
         if (!question.updated) {
             question.updated = [];

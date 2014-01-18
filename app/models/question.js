@@ -7,8 +7,24 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Question Schema
+ * Question & Answer Schema
  */
+var AnswerSchema = new Schema({
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    content: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    user: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    }
+});
+
 var QuestionSchema = new Schema({
     created: {
         type: Date,
@@ -22,7 +38,7 @@ var QuestionSchema = new Schema({
     type: String,
     correctanswer: Schema.Types.Mixed,
     possibleanswers: Schema.Types.Mixed,
-    answers: [String],
+    answers: [AnswerSchema],
     user: {
         type: Schema.ObjectId,
         ref: 'User'
@@ -42,7 +58,9 @@ QuestionSchema.path('content').validate(function(content) {
 QuestionSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('user', 'name username').exec(cb);
+    }).populate('user', 'name username')
+    .populate('answers.user', 'name username').exec(cb);
 };
 
+mongoose.model('Answer', AnswerSchema);
 mongoose.model('Question', QuestionSchema);

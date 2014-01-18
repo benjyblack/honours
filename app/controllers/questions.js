@@ -45,6 +45,13 @@ exports.update = function(req, res) {
 
     question = _.extend(question, req.body);
 
+    // If a new answer has been added, mark the current user as the owner of it
+    for (var i = 0; i < req.body.answers.length; i++) {
+        if (req.body.answers[i].hasOwnProperty('isNew')) {
+            question.answers[i].user = req.user;
+        }
+    }
+
     question.save(function(err) {
         res.jsonp(question);
     });
