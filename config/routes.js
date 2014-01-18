@@ -72,9 +72,9 @@ module.exports = function(app, passport, auth) {
 
     //Questions Routes
     var questions = require('../app/controllers/questions');
-    app.get('/questions', questions.all);
+    app.get('/questions', auth.requiresLogin, questions.all);
     app.post('/questions', auth.requiresLogin, questions.create);
-    app.get('/questions/:questionId', questions.show);
+    app.get('/questions/:questionId', auth.requiresLogin, questions.show);
     app.put('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToEdit, questions.update);
     app.del('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToDelete, questions.destroy);
 
