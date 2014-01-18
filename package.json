@@ -59,5 +59,8 @@
         "karma": "~0.10.4",
         "grunt-karma": "~0.6.2",
         "karma-coverage": "~0.1.0"
+    },
+    "engines": {
+        "node": "0.10.x"
     }
 }
