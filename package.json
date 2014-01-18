@@ -1,12 +1,12 @@
 {
-    "name": "mean",
-    "description": "MEAN - A Modern Stack: MongoDB, ExpressJS, AngularJS, NodeJS. (BONUS: Passport User Support).",
+    "name": "honours",
+    "description": "Honours Project",
     "version": "0.1.0",
     "private": false,
-    "author": "Amos Haviv",
+    "author": "Ben Black",
     "repository": {
         "type": "git",
-        "url": "https://github.com/linnovate/mean.git"
+        "url": "https://github.com/benjyblack/honours.git"
     },
     "engines": {
         "node": "0.10.x",
