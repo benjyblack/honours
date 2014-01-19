@@ -6,6 +6,7 @@ This is a project for COMP4905 being worked on by Ben Black.
 * Add charts for answers
 * Add testing
 * Add more validation and authentication
+* Make more responsive for mobile platforms
 * Implement TA Office Hours ?
 
 ## Prerequisites

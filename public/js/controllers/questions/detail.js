@@ -1,4 +1,4 @@
-angular.module('mean.questions').controller('QuestionsDetailController', ['$scope', '$routeParams', '$location', 'Global', 'Questions', function ($scope, $routeParams, $location, Global, Questions) {
+angular.module('mean.questions').controller('QuestionsDetailController', ['$scope', '$routeParams', '$location', 'Global', 'Questions', 'Charts', function ($scope, $routeParams, $location, Global, Questions, Charts) {
     $scope.global = Global;
 
     $scope.findOne = function() {
@@ -6,7 +6,11 @@ angular.module('mean.questions').controller('QuestionsDetailController', ['$scop
             questionId: $routeParams.questionId
         }, function(question) {
             $scope.question = question;
-            $scope.answer = '';
+
+            if (question.type === 'truefalse')
+              $scope.chart = Charts.createTrueFalseChart(question);
+            else if (question.type === 'multiplechoice')
+              $scope.chart = Charts.createMultipleChoiceChart(question);
         });
     };
 
@@ -17,4 +21,5 @@ angular.module('mean.questions').controller('QuestionsDetailController', ['$scop
             $location.path('questions/');
         });
     };
+
 }]);
