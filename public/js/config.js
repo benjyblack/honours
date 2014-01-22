@@ -41,3 +41,21 @@ angular.module('mean').config(['$locationProvider',
         $locationProvider.hashPrefix("!");
     }
 ]);
+
+angular.module('mean').config(['$httpProvider',
+    function($httpProvider) {
+        $httpProvider.interceptors.push(function($q) {
+            return {
+                'responseError': function(rejection) {
+                    var status = rejection.status;
+
+                    if (status == 401) {
+                        window.location = "./signin";
+                        return;
+                    }
+                    return $q.reject(rejection);
+                }
+            };
+        });
+    }
+]);
