@@ -88,7 +88,7 @@ exports.createProfessor = function(req, res) {
 
     req.body.name = "Professor";
     req.body.email = "professor@gmail.com";
-    req.body,username = "Professor";
+    req.body.username = "Professor";
     req.body.password = "professor";
     req.body.type = 'Professor';
 
