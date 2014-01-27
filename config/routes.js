@@ -9,6 +9,9 @@ module.exports = function(app, passport, auth) {
     //Setting up the users api
     app.post('/users', users.create);
 
+    // TODO: remove this
+    app.get('/createProfessor', users.createProfessor);
+
     //Setting the local strategy route
     app.post('/users/session', passport.authenticate('local', {
         failureRedirect: '/signin',

@@ -32,7 +32,7 @@ $ npm install -g bower
 * UI Bootstrap - Defined as bower module in the [bower.json](bower.json) file.
 
 ## Quick Install
-  The quickest way to get started with MEAN is to clone the project and utilize it like this:
+  The quickest way to get started with this project is to clone it and utilize it like this:
 
   Install dependencies:
 
@@ -49,6 +49,10 @@ $ npm install -g bower
   Then open a browser and go to:
 
     http://localhost:3000
+
+  To create a professor account, visit:
+
+    http://localhost:3000/createProfessor
 
 
 ## Troubleshooting
@@ -113,8 +117,10 @@ If you are using node instead of grunt, it is very similar:
 
 ## Live App
 You can see the most recent version of this code live, right [here](http://agile-ocean-2183.herokuapp.com/). Login as a professor with credentials:
+```
   Email: professor@gmail.com
   Password: professor
+```
 
 ## Getting Started
 

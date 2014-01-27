@@ -81,6 +81,44 @@ exports.create = function(req, res) {
     });
 };
 
+/** TODO: Remove this
+ * Create Professor
+ */
+exports.createProfessor = function(req, res) {
+
+    req.body.name = "Professor";
+    req.body.email = "professor@gmail.com";
+    req.body,username = "Professor";
+    req.body.password = "professor";
+    req.body.type = 'Professor';
+
+    var user = new User(req.body);
+    var message = null;
+
+    user.provider = 'local';
+    user.save(function(err) {
+        if (err) {
+            switch(err.code){
+                case 11000:
+                case 11001:
+                    message = 'Username already exists';
+                    break;
+                default: 
+                    message = 'Please fill all the required fields';
+            }
+
+            return res.render('users/signup', {
+                message: message,
+                user: user
+            });
+        }
+        req.logIn(user, function(err) {
+            if (err) return next(err);
+            return res.redirect('/');
+        });
+    });
+};
+
 /**
  * Send User
  */
