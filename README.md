@@ -3,7 +3,6 @@
 This is a project for COMP4905 being worked on by Ben Black.  
 
 ## Next Steps
-* Add charts for answers
 * Add testing
 * Add more validation and authentication
 * Make more responsive for mobile platforms
@@ -113,7 +112,9 @@ If you are using node instead of grunt, it is very similar:
 > NOTE: Running Node.js applications in the __production__ environment enables caching, which is disabled by default in all other environments.
 
 ## Live App
-You can see the most recent version of this code live, right [here](http://agile-ocean-2183.herokuapp.com/).
+You can see the most recent version of this code live, right [here](http://agile-ocean-2183.herokuapp.com/). Login as a professor with credentials:
+  Email: professor@gmail.com
+  Password: professor
 
 ## Getting Started
 
