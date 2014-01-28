@@ -1,4 +1,4 @@
-angular.module('mean.questions').controller('QuestionsDetailController', ['$scope', '$routeParams', '$location', 'Global', 'Questions', 'Charts', function ($scope, $routeParams, $location, Global, Questions, Charts) {
+angular.module('mean.questions').controller('QuestionsDetailController', ['$scope', '$routeParams', '$location', 'Global', 'Questions', 'Charts', 'WordClouds', function ($scope, $routeParams, $location, Global, Questions, Charts, WordClouds) {
     $scope.global = Global;
 
     $scope.findOne = function() {
@@ -8,9 +8,21 @@ angular.module('mean.questions').controller('QuestionsDetailController', ['$scop
             $scope.question = question;
 
             if (question.type === 'truefalse')
-              $scope.chart = Charts.createTrueFalseChart(question);
+            {
+                $scope.visualizationType =  "chart";
+                $scope.visualization = Charts.createTrueFalseChart(question);
+            }
             else if (question.type === 'multiplechoice')
-              $scope.chart = Charts.createMultipleChoiceChart(question);
+            {
+                $scope.visualizationType =  "chart";
+                $scope.visualization = Charts.createMultipleChoiceChart(question);
+            }
+            else if (question.type === 'text')
+            {
+                $scope.visualizationType =  "cloud";
+                $scope.visualization = WordClouds.createCloud(question);
+                $scope.visualization.start();
+            }
         });
     };
 

@@ -20,6 +20,7 @@ script(type='text/javascript', src='/js/services/global.js')
 script(type='text/javascript', src='/js/services/articles.js')
 script(type='text/javascript', src='/js/services/questions.js')
 script(type='text/javascript', src='/js/services/charts.js')
+script(type='text/javascript', src='/js/services/wordclouds.js')
 
 //Application Controllers
 script(type='text/javascript', src='/js/controllers/articles.js')
@@ -31,8 +32,13 @@ script(type='text/javascript', src='/js/controllers/index.js')
 script(type='text/javascript', src='/js/controllers/header.js')
 script(type='text/javascript', src='/js/init.js')
 
+//Word Cloud
+script(type='text/javascript', src='/lib/d3-cloud-master/lib/d3/d3.js')
+script(type='text/javascript', src='/lib/d3-cloud-master/d3.layout.cloud.js')
+
 //Miscellaneous
 script(type='text/javascript', src='/lib/miscellaneous/ng-google-chart.js')
+
 
 
 if (process.env.NODE_ENV == 'development')

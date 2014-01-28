@@ -41,12 +41,13 @@ angular.module('mean.questions').factory("Charts", function() {
   return {
     createMultipleChoiceChart: function(question) {
       var numEntriesForPossibleAnswer = {};
-
-      for(var i=0; i<question.possibleanswers.length; i++)
+      var i;
+      
+      for(i=0; i<question.possibleanswers.length; i++)
       {
         numEntriesForPossibleAnswer[question.possibleanswers[i].content] = 0;
       }
-      for(var i=0; i<question.answers.length; i++)
+      for(i=0; i<question.answers.length; i++)
       {
         numEntriesForPossibleAnswer[question.answers[i].content]++;
       }
