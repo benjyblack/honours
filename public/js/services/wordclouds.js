@@ -1,4 +1,4 @@
-angular.module('mean.questions').factory("WordClouds", function() {
+angular.module('mean.questions').factory('WordClouds', function() {
     var fill = d3.scale.category20();
 
     function draw(words) {
@@ -21,17 +21,22 @@ angular.module('mean.questions').factory("WordClouds", function() {
     }
 
     function createCommonWordDictionary(answers) {
-        var dictionary = {};
-        var terms = [];
-        var words = [];
+        var formattedArray = []; // the array the function returns, formatted to work with the wordcloud library
+        var dictionary = {}; // temporary dictionary that associates each term with the amount of times its repeated
+        var terms = []; // temporary array to hold all of the terms seen in the answers
+
+        var numTotalTerms = 0;
+
+        var ignoredTerms = ['the', 'and', 'an', 'of', 'at', 'because', 'it', 'like', 'was', 'would'];
 
         answers.forEach(function(answer) {
             var termsForThisAnswer = [];
             var tokens = answer.content.split(' ');
 
             tokens.forEach(function(token) {
-                if (termsForThisAnswer.indexOf(token) === -1)
-                    termsForThisAnswer.push(token);
+                var sanitizedToken = token.toLowerCase();
+                if (termsForThisAnswer.indexOf(sanitizedToken) === -1 && ignoredTerms.indexOf(sanitizedToken) === -1) // only count each unique word in an answer
+                    termsForThisAnswer.push(sanitizedToken.toLowerCase());
             });
 
             terms = terms.concat(termsForThisAnswer);
@@ -39,29 +44,29 @@ angular.module('mean.questions').factory("WordClouds", function() {
 
         terms.forEach( function(x) {
             dictionary[x] = (dictionary[x] || 0)+1;
+            numTotalTerms++;
         });
 
         angular.forEach(dictionary, function(value, key) {
-            words.push({
+            formattedArray.push({
                 text: key,
-                size: 10 + value * 10
+                size: (value/numTotalTerms) * 300 // size is weighted proportionally to the frequency of the term
             });
         });
 
-        return words;
+        return formattedArray;
     }
 
     return {
         createCloud: function(question) {
-            var words = createCommonWordDictionary(question.answers);
-
+            
             var cloud = d3.layout.cloud().size([300, 300])
-                .words(words)
+                .words(createCommonWordDictionary(question.answers))
                 .padding(5)
                 .rotate(function() { return ~~(Math.random() * 2) * 90; })
-                .font("Impact")
+                .font('Impact')
                 .fontSize(function(d) { return d.size; })
-                .on("end", draw);
+                .on('end', draw);
 
             return cloud;
         }
