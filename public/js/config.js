@@ -2,32 +2,25 @@
 angular.module('mean').config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-        when('/articles', {
-            templateUrl: 'views/articles/list.html'
-        }).
-        when('/articles/create', {
-            templateUrl: 'views/articles/create.html'
-        }).
-        when('/articles/:articleId/edit', {
-            templateUrl: 'views/articles/edit.html'
-        }).
-        when('/articles/:articleId', {
-            templateUrl: 'views/articles/view.html'
-        }).
         when('/questions', {
-            templateUrl: 'views/questions/list.html'
+            templateUrl: 'views/questions/list.html',
+            controller: 'QuestionsListController'
         }).
         when('/questions/create', {
-            templateUrl: 'views/questions/create.html'
+            templateUrl: 'views/questions/create.html',
+            controller: 'QuestionsCreateController'
         }).
         when('/questions/:questionId/answer', {
-            templateUrl: 'views/questions/answer.html'
+            templateUrl: 'views/questions/answer.html',
+            controller: 'QuestionsEditController'
         }).
         when('/questions/:questionId', {
-            templateUrl: 'views/questions/detail.html'
+            templateUrl: 'views/questions/detail.html',
+            controller: 'QuestionsDetailController'
         }).
         when('/', {
-            templateUrl: 'views/index.html'
+            templateUrl: 'views/index.html',
+            controller: 'IndexController'
         }).
         otherwise({
             redirectTo: '/'
