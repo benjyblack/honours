@@ -21,19 +21,6 @@ exports.user = {
 };
 
 /**
- * Article authorizations routing middleware
- */
-exports.article = {
-    hasAuthorization: function(req, res, next) {
-        if (req.article.user.id != req.user.id) {
-            return res.send(401, 'User is not authorized');
-        }
-        next();
-    }
-};
-
-
-/**
  * Question authorizations routing middleware
  */
 exports.question = {
