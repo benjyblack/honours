@@ -20,7 +20,7 @@ angular.module('mean.questions').controller('QuestionsDetailController', ['$scop
             else if (question.type === 'text')
             {
                 $scope.visualizationType =  "cloud";
-                $scope.visualization = WordClouds.createCloud(question);
+                $scope.visualization = WordClouds.createCloud(question, '#cloud');
                 $scope.visualization.start();
             }
         });

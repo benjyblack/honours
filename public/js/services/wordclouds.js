@@ -1,25 +1,6 @@
 angular.module('mean.questions').factory('WordClouds', function() {
     var fill = d3.scale.category20();
 
-    function draw(words) {
-        d3.select('#cloud').append('svg')
-            .attr('width', 300)
-            .attr('height', 300)
-            .append('g')
-            .attr('transform', 'translate(150,150)')
-            .selectAll('text')
-            .data(words)
-            .enter().append('text')
-            .style('font-size', function(d) { return d.size + 'px'; })
-            .style('font-family', 'Impact')
-            .style('fill', function(d, i) { return fill(i); })
-            .attr('text-anchor', 'middle')
-            .attr('transform', function(d) {
-                return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')';
-            })
-            .text(function(d) { return d.text; });
-    }
-
     function createCommonWordDictionary(answers) {
         var formattedArray = []; // the array the function returns, formatted to work with the wordcloud library
         var dictionary = {}; // temporary dictionary that associates each term with the amount of times its repeated
@@ -58,7 +39,7 @@ angular.module('mean.questions').factory('WordClouds', function() {
     }
 
     return {
-        createCloud: function(question) {
+        createCloud: function(question, elementId) {
             
             var cloud = d3.layout.cloud().size([300, 300])
                 .words(createCommonWordDictionary(question.answers))
@@ -66,7 +47,24 @@ angular.module('mean.questions').factory('WordClouds', function() {
                 .rotate(function() { return ~~(Math.random() * 2) * 90; })
                 .font('Impact')
                 .fontSize(function(d) { return d.size; })
-                .on('end', draw);
+                .on('end', function(words) {
+                    d3.select(elementId).append('svg')
+                    .attr('width', 300)
+                    .attr('height', 300)
+                    .append('g')
+                    .attr('transform', 'translate(150,150)')
+                    .selectAll('text')
+                    .data(words)
+                    .enter().append('text')
+                    .style('font-size', function(d) { return d.size + 'px'; })
+                    .style('font-family', 'Impact')
+                    .style('fill', function(d, i) { return fill(i); })
+                    .attr('text-anchor', 'middle')
+                    .attr('transform', function(d) {
+                        return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')';
+                    })
+                    .text(function(d) { return d.text; });
+                });
 
             return cloud;
         }
