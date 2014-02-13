@@ -6,12 +6,6 @@ angular.module('mean.questions').controller('QuestionsDetailController', ['$scop
             questionId: $routeParams.questionId
         }, function(question) {
             $scope.question = question;
-
-            if (question.type === 'multiplechoice' || question.type === 'truefalse')
-                $scope.visualizationType = 'chart';
-            else
-                $scope.visualizationType = 'cloud';
-  
             $scope.visualization =  Visualizations.createVisualization(question);
         });
     };

@@ -2,19 +2,24 @@ angular.module('mean.questions').factory('Visualizations', ['WordClouds', 'Chart
     return {
         createVisualization: function(question) {
             if (question.type === 'truefalse')
-            {
-                return Charts.createTrueFalseChart(question);
-            }
+                return {
+                    type: 'chart',
+                    content: Charts.createTrueFalseChart(question)
+                };
             else if (question.type === 'multiplechoice')
-            {
-                return Charts.createMultipleChoiceChart(question);
-            }
+                return {
+                    type: 'chart',
+                    content: Charts.createMultipleChoiceChart(question)
+                };
             else if (question.type === 'text')
             {
                 var visualization = WordClouds.createCloud(question, '#cloud');
                 visualization.start();
 
-                return visualization;
+                return {
+                    type: 'cloud',
+                    content: visualization
+                };
             }
         }
     };
