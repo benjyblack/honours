@@ -18,10 +18,10 @@
         <span>{{question.correctanswer}}
     </div>
     <h3>Answers</h3>
-    <div data-ng-show="visualizationType == 'chart'">
+    <div data-ng-show="visualizationType === 'chart'">
         <div google-chart chart="visualization" style="{{visualization.cssStyle}}"></div>
     </div>
-    <div data-ng-show="visualizationType == 'cloud'">
+    <div data-ng-show="visualizationType === 'cloud'">
         <div id="cloud"></div>
     </div>
     <ul ng-repeat="answer in question.answers track by $index">

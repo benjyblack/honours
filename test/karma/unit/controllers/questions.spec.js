@@ -8,8 +8,7 @@
             $routeParams,
             $location,
             $controllerConstructor,
-            mockChart,
-            mockWordCloud;
+            mockVisualizations;
 
         // The $resource service augments the response object with methods for updating and deleting the resource.
         // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
@@ -38,11 +37,9 @@
 
             $controllerConstructor = $controller;
 
-            mockChart = { 
-                createTrueFalseChart: jasmine.createSpy('createTrueFalseChart'), 
-                createMultipleChoiceChart: jasmine.createSpy('createMultipleChoiceChart') 
+            mockVisualizations = { 
+                createVisualization: jasmine.createSpy('createTrueFalseChart') 
             };
-            mockWordCloud = { createCloud: jasmine.createSpy(), start: jasmine.createSpy() };
         }));
 
         describe('QuestionsListController', function() {
@@ -88,8 +85,7 @@
             beforeEach(inject(function($controller) {
                 QuestionsDetailController = $controller('QuestionsDetailController', {
                     $scope: scope,
-                    Charts: mockChart,
-                    WordClouds: mockWordCloud
+                    Visualizations: mockVisualizations
                 });
 
             }));
@@ -117,18 +113,6 @@
 
                     // test scope value
                     expect(scope.question).toEqualData(testQuestionData());
-            });
-            
-            it('$scope.addVisualization() should call the proper methods', function() {
-                scope.question = {
-                            title: 'Hey, what\'s up?',
-                            content: 'MEAN rocks!',
-                            type: 'truefalse'
-                        };
-
-                scope.addVisualization();
-
-                expect(mockChart.createTrueFalseChart).toHaveBeenCalled();
             });
         });
             // it('$scope.findOne() should create an array with one question object fetched ' +
