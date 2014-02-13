@@ -38,10 +38,10 @@
     },
     "devDependencies": {
         "supertest": "latest",
-        "should": "latest",
+        "should": "2.1.1",
         "grunt-contrib-watch": "latest",
         "grunt-contrib-jshint": "latest",
-        "grunt-nodemon": "latest",
+        "grunt-nodemon": "0.1.2",
         "grunt-concurrent": "latest",
         "grunt-mocha-test": "latest",
         "karma-script-launcher": "~0.1.0",
