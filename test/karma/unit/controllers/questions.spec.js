@@ -1,51 +1,58 @@
 (function() {
     'use strict';
 
-    // Articles Controller Spec
-    describe('MEAN controllers', function() {
+    // Questions Controller Spec
+    describe('Question controllers', function() {
+        var scope,
+            $httpBackend,
+            $routeParams,
+            $location,
+            $controllerConstructor,
+            mockChart,
+            mockWordCloud;
+
+        // The $resource service augments the response object with methods for updating and deleting the resource.
+        // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
+        // the responses exactly. To solve the problem, we use a newly-defined toEqualData Jasmine matcher.
+        // When the toEqualData matcher compares two objects, it takes only object properties into
+        // account and ignores methods.
+        beforeEach(function() {
+            this.addMatchers({
+                toEqualData: function(expected) {
+                    return angular.equals(this.actual, expected);
+                }
+            });
+        });
+
+        // Load the controllers module
+        beforeEach(module('mean'));
+
+        beforeEach(inject(function($controller, $rootScope, _$location_, _$routeParams_, _$httpBackend_) {
+            scope = $rootScope.$new();
+
+            $routeParams = _$routeParams_;
+
+            $httpBackend = _$httpBackend_;
+
+            $location = _$location_;
+
+            $controllerConstructor = $controller;
+
+            mockChart = { 
+                createTrueFalseChart: jasmine.createSpy('createTrueFalseChart'), 
+                createMultipleChoiceChart: jasmine.createSpy('createMultipleChoiceChart') 
+            };
+            mockWordCloud = { createCloud: jasmine.createSpy(), start: jasmine.createSpy() };
+        }));
 
         describe('QuestionsListController', function() {
+            var QuestionsListController;
 
-            // The $resource service augments the response object with methods for updating and deleting the resource.
-            // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
-            // the responses exactly. To solve the problem, we use a newly-defined toEqualData Jasmine matcher.
-            // When the toEqualData matcher compares two objects, it takes only object properties into
-            // account and ignores methods.
-            beforeEach(function() {
-                this.addMatchers({
-                    toEqualData: function(expected) {
-                        return angular.equals(this.actual, expected);
-                    }
-                });
-            });
-
-            // Load the controllers module
-            beforeEach(module('mean'));
-
-            // Initialize the controller and a mock scope
-            var QuestionsListController,
-                scope,
-                $httpBackend,
-                $routeParams,
-                $location;
-
-            // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
-            // This allows us to inject a service but then attach it to a variable
-            // with the same name as the service.
-            beforeEach(inject(function($controller, $rootScope, _$location_, _$routeParams_, _$httpBackend_) {
-
-                scope = $rootScope.$new();
-
-                QuestionsListController = $controller('QuestionsListController', {
+            beforeEach(inject(function($controller) {
+                // Initialize the controller
+                QuestionsListController = $controllerConstructor('QuestionsListController', {
                     $scope: scope
                 });
-
-                $routeParams = _$routeParams_;
-
-                $httpBackend = _$httpBackend_;
-
-                $location = _$location_;
-
             }));
 
             it('$scope.find() should create an array with at least one question object ' +
@@ -53,7 +60,7 @@
 
                     // test expected GET request
                     $httpBackend.expectGET('questions').respond([{
-                        title: 'An question about MEAN',
+                        title: 'A question about MEAN',
                         content: 'MEAN rocks!'
                     }]);
 
@@ -63,14 +70,69 @@
 
                     // test scope value
                     expect(scope.questions).toEqualData([{
-                        title: 'An question about MEAN',
+                        title: 'A question about MEAN',
                         content: 'MEAN rocks!'
                     }]);
 
                 });
+        });
 
+        describe('QuestionsDetailController', function() {
+
+            // Initialize the controller
+            var QuestionsDetailController;
+
+            // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
+            // This allows us to inject a service but then attach it to a variable
+            // with the same name as the service.
+            beforeEach(inject(function($controller) {
+                QuestionsDetailController = $controller('QuestionsDetailController', {
+                    $scope: scope,
+                    Charts: mockChart,
+                    WordClouds: mockWordCloud
+                });
+
+            }));
+
+            it('$scope.findOne() should create an array with one question object fetched ' +
+                'from XHR using a questionId URL parameter', function() {
+                    // fixture URL parament
+                    $routeParams.questionId = '525a8422f6d0f87f0e407a33';
+
+                    // fixture response object
+                    var testQuestionData = function() {
+                        return {
+                            title: 'A question about MEAN',
+                            content: 'MEAN rocks!',
+                            type: 'truefalse'
+                        };
+                    };
+
+                    // test expected GET request with response object
+                    $httpBackend.expectGET(/questions\/([0-9a-fA-F]{24})$/).respond(testQuestionData());
+
+                    // run controller
+                    scope.findOne();
+                    $httpBackend.flush();
+
+                    // test scope value
+                    expect(scope.question).toEqualData(testQuestionData());
+            });
+            
+            it('$scope.addVisualization() should call the proper methods', function() {
+                scope.question = {
+                            title: 'Hey, what\'s up?',
+                            content: 'MEAN rocks!',
+                            type: 'truefalse'
+                        };
+
+                scope.addVisualization();
+
+                expect(mockChart.createTrueFalseChart).toHaveBeenCalled();
+            });
+        });
             // it('$scope.findOne() should create an array with one question object fetched ' +
-            //     'from XHR using a articleId URL parameter', function() {
+            //     'from XHR using a questionId URL parameter', function() {
             //         // fixture URL parament
             //         $routeParams.questionId = '525a8422f6d0f87f0e407a33';
 
@@ -195,8 +257,5 @@
             //         expect(scope.questions.length).toBe(0);
 
             //     }));
-
-        });
-
     });
 }());
