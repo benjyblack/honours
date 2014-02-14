@@ -90,7 +90,7 @@
 
             }));
 
-            it('$scope.findOne() should create an array with one question object fetched ' +
+            it('$scope.findOne() should return a single question object fetched ' +
                 'from XHR using a questionId URL parameter', function() {
                     // fixture URL parament
                     $routeParams.questionId = '525a8422f6d0f87f0e407a33';
@@ -113,6 +113,112 @@
 
                     // test scope value
                     expect(scope.question).toEqualData(testQuestionData());
+            });
+
+            it('$scope.delete() should send a DELETE request with a valid questionId' +
+                'and change the location the questions list', inject(function(Questions) {
+
+                    scope.question = new Questions({
+                        _id: '525a8422f6d0f87f0e407a33'
+                    });
+
+                    $httpBackend.expectDELETE(/questions\/([0-9a-fA-F]{24})$/).respond(204);
+
+                    // run controller
+                    scope.delete();
+                    $httpBackend.flush();
+
+                    //  test after successful delete URL location questions list
+                     expect($location.path()).toBe('/questions');
+                }));
+
+        });
+
+        describe('QuestionsCreateController', function() {
+
+            // Initialize the controller
+            var QuestionsCreateController;
+
+            // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
+            // This allows us to inject a service but then attach it to a variable
+            // with the same name as the service.
+            beforeEach(inject(function($controller) {
+                QuestionsCreateController = $controller('QuestionsCreateController', {
+                    $scope: scope
+                });
+            }));
+
+            it('$scope.create() with valid form data should send a POST request ' +
+                'with the form input values and then ' +
+                'locate to new object URL', function() {
+
+                    // fixture expected POST data
+                    var postQuestionData = function() {
+                        return {
+                            content: 'Why is the sky blue?',
+                            type: 'text',
+                            correctanswer: 'because',
+                            possibleanswers: []
+                        };
+                    };
+
+                    // fixture expected response data
+                    var respondQuestionData = function() {
+                        return {
+                            _id: '525cf20451979dea2c000001',
+                            content: 'Why is the sky blue?',
+                            type: 'text',
+                            correctanswer: 'because',
+                            possibleanswers: []
+                        };
+                    };
+
+                    // fixture mock form input values
+                    scope.question.content = 'Why is the sky blue?';
+                    scope.question.type = 'text';
+                    scope.question.correctanswer = 'because';
+                    scope.question.possibleanswers = [];
+
+                    // test post request is sent
+                    $httpBackend.expectPOST('questions', postQuestionData()).respond(respondQuestionData());
+
+                    // Run controller
+                    scope.create();
+                    $httpBackend.flush();
+
+                    // test URL location to new object
+                    expect($location.path()).toBe('/questions/' + respondQuestionData()._id);
+            });
+
+
+            it('$scope.addChoice() should add another possible answer', function() {
+                var numPossibleAnswersBeforeAdd = scope.question.possibleanswers.length;
+
+                scope.addChoice();
+
+                expect(scope.question.possibleanswers.length).toEqual(numPossibleAnswersBeforeAdd + 1);
+            });
+
+            it('$scope.removeChoice() should remove a possible answer', function() {
+                var exampleAnswer = 'AnswerA';
+
+                scope.question.possibleanswers = [exampleAnswer];
+
+                scope.removeChoice(0);
+
+                expect(scope.question.possibleanswers.length).toEqual(0);
+            });
+
+            it('$scope.removeChoice() should set the selectedAnswerIndex to 0,' +
+                ' if the selected answer was removed', function() {
+                var exampleAnswers = [ 'AnswerA', 'AnswerB' ];
+
+                scope.question.possibleanswers = exampleAnswers;
+                scope.selectedAnswer = 1;
+
+                scope.removeChoice(1);
+
+                expect(scope.selectedAnswerIndex).toEqual(0);
             });
         });
             // it('$scope.findOne() should create an array with one question object fetched ' +
@@ -140,45 +246,7 @@
 
             //     });
 
-            // it('$scope.create() with valid form data should send a POST request ' +
-            //     'with the form input values and then ' +
-            //     'locate to new object URL', function() {
-
-            //         // fixture expected POST data
-            //         var postQuestionData = function() {
-            //             return {
-            //                 title: 'An Article about MEAN',
-            //                 content: 'MEAN rocks!'
-            //             };
-            //         };
-
-            //         // fixture expected response data
-            //         var respondQuestionData = function() {
-            //             return {
-            //                 _id: '525cf20451979dea2c000001',
-            //                 title: 'An Article about MEAN',
-            //                 content: 'MEAN rocks!'
-            //             };
-            //         };
-
-            //         // fixture mock form input values
-            //         scope.title = 'An Article about MEAN';
-            //         scope.content = 'MEAN rocks!';
-
-            //         // test post request is sent
-            //         $httpBackend.expectPOST('questions', postQuestionData()).respond(respondQuestionData());
-
-            //         // Run controller
-            //         scope.create();
-            //         $httpBackend.flush();
-
-            //         // test form input(s) are reset
-            //         expect(scope.title).toEqual('');
-            //         expect(scope.content).toEqual('');
-
-            //         // test URL location to new object
-            //         expect($location.path()).toBe('/questions/' + respondQuestionData()._id);
-            //     });
+            
 
             // it('$scope.update() should update a valid article', inject(function(Questions) {
 
@@ -216,30 +284,5 @@
             //     expect($location.path()).toBe('/questions/' + putArticleData()._id);
 
             // }));
-
-            // it('$scope.remove() should send a DELETE request with a valid articleId' +
-            //     'and remove the article from the scope', inject(function(Articles) {
-
-            //         // fixture rideshare
-            //         var question = new Questions({
-            //             _id: '525a8422f6d0f87f0e407a33'
-            //         });
-
-            //         // mock rideshares in scope
-            //         scope.questions = [];
-            //         scope.questions.push(question);
-
-            //         // test expected rideshare DELETE request
-            //         $httpBackend.expectDELETE(/questions\/([0-9a-fA-F]{24})$/).respond(204);
-
-            //         // run controller
-            //         scope.remove(question);
-            //         $httpBackend.flush();
-
-            //         // test after successful delete URL location articles lis
-            //         //expect($location.path()).toBe('/articles');
-            //         expect(scope.questions.length).toBe(0);
-
-            //     }));
     });
 }());

@@ -4,7 +4,7 @@
         <div class="control-group">
             <label class="control-label" for="content">Question</label>
             <div class="controls">
-                <input type="text" data-ng-model="content" id="content" placeholder="Enter question here..." required>
+                <input type="text" data-ng-model="question.content" id="content" placeholder="Enter question here..." >
             </div>
         </div>
         <div class="control-group">
@@ -12,22 +12,22 @@
             <div class="controls">
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn">
-                        <input type="radio" name="options" data-ng-model="type" value="text" id="text"> Text
+                        <input type="radio" name="options" data-ng-model="question.type" value="text" id="text"> Text
                     </label>
                     <label class="btn">
-                        <input type="radio" name="options" data-ng-model="type" value="truefalse" id="truefalse"> True/False
+                        <input type="radio" name="options" data-ng-model="question.type" value="truefalse" id="truefalse"> True/False
                     </label>
                     <label class="btn">
-                        <input type="radio" name="options" data-ng-model="type" value="multiplechoice" id="multiplechoice"> Multiple Choice
+                        <input type="radio" name="options" data-ng-model="question.type" value="multiplechoice" id="multiplechoice"> Multiple Choice
                     </label>
                 </div>
             </div>
         </div>
-        <div class="control-group" ng-switch on="type">
+        <div class="control-group" ng-switch on="question.type">
             <div ng-switch-when="text">
                 <label class="control-label" for="correctanswer-text">Correct Answer</label>
                 <div class="controls">
-                    <textarea data-ng-model="$parent.correctanswer" id="correctanswer" cols="30" rows="10" placeholder="Enter answer...">
+                    <textarea data-ng-model="$parent.question.correctanswer" id="correctanswer" cols="30" rows="10" placeholder="Enter answer...">
                     </textarea>
                 </div>
             </div>
@@ -36,10 +36,10 @@
                 <div class="controls">
                     <div class="btn-group" id="correctanswer-truefalse" data-toggle="buttons">
                         <label class="btn">
-                            <input type="radio" name="options-truefalse" data-ng-model="$parent.correctanswer" value="true" id="correctanswer-true"> True
+                            <input type="radio" name="options-truefalse" data-ng-model="$parent.question.correctanswer" value="true" id="correctanswer-true"> True
                         </label>
                         <label class="btn">
-                            <input type="radio" name="options-truefalse" data-ng-model="$parent.correctanswer" value="false" id="correctanswer-false"> False
+                            <input type="radio" name="options-truefalse" data-ng-model="$parent.question.correctanswer" value="false" id="correctanswer-false"> False
                         </label>
                     </div>
                 </div>
@@ -48,10 +48,12 @@
                 <label class="control-label" for="correctanswer-multiplechoice">Possible Answers</label>
                 <div class="controls">
                     [ <a href="" ng-click="addChoice()">add</a> ]
-                    <div ng-repeat="answer in $parent.possibleanswers track by $index">
-                        <input type="text" ng-model="answer.content" required>
-                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.correctanswer" value="{{answer.content}}">
-                        [ <a href="" ng-click="removeChoice(answer)">X</a> ]
+                    <div ng-repeat="answer in $parent.question.possibleanswers track by $index">
+                        <input type="text" data-ng-model="$parent.question.possibleanswers[$index]" required>
+                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.selectedAnswerIndex" value="{{$index}}">
+                        <span ng-show='$parent.question.possibleanswers.length > 1' >
+                            [ <a href="" ng-click="removeChoice($index)">X</a> ]
+                        </span>
                     </div>
                 </div>
             </div>

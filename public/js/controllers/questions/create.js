@@ -1,36 +1,26 @@
 angular.module('mean.questions').controller('QuestionsCreateController', ['$scope', '$routeParams', '$location', 'Global', 'Questions', function ($scope, $routeParams, $location, Global, Questions) {
     $scope.global = Global;
+    $scope.question = new Questions({ type: 'text', possibleanswers: [''] });
 
-    $scope.type = 'text';
-    $scope.possibleanswers = [{ content: '' }];
+    $scope.selectedAnswerIndex = 0; // only used with multiple choice questions
 
     $scope.create = function() {
-        var question = new Questions({
-            content: this.content,
-            type: this.type,
-            correctanswer: this.correctanswer
-        });
+        if (typeof($scope.question.content) === 'undefined' || $scope.question.content.length === 0) return;
+        
+        if ($scope.question.type === 'multiplechoice')
+            $scope.correctanswer = $scope.question.possibleanswers[$scope.selectedAnswer];
 
-        // only add possible answers if the question is a multiple choice question
-        if (this.type === "multiplechoice")
-            question.possibleanswers = this.possibleanswers;
-
-        question.$save(function(response) {
+        $scope.question.$save(function(response) {
             $location.path('questions/' + response._id);
         });
-
-        this.content = '';
     };
 
     $scope.addChoice = function() {
-        this.possibleanswers.push({ content: '' });
+        $scope.question.possibleanswers.push('');
     };
 
-    $scope.removeChoice = function(possibleanswer) {
-        for (var i = 0, ii = this.possibleanswers.length; i < ii; i++) {
-            if (possibleanswer === this.possibleanswers[i]) {
-                this.possibleanswers.splice(i, 1);
-            }
-        }
+    $scope.removeChoice = function(index) {
+        $scope.question.possibleanswers.splice(index, 1);
+        if (index == $scope.selectedAnswerIndex) $scope.selectedAnswerIndex = 0;
     };
 }]);

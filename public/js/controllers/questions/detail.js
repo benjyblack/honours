@@ -14,7 +14,7 @@ angular.module('mean.questions').controller('QuestionsDetailController', ['$scop
         var question = $scope.question;
 
         question.$delete(function() {
-            $location.path('questions/');
+            $location.path('questions');
         });
     };
 }]);
