@@ -5,8 +5,6 @@ angular.module('mean.questions').controller('QuestionsCreateController', ['$scop
     $scope.selectedAnswerIndex = 0; // only used with multiple choice questions
 
     $scope.create = function() {
-        if (typeof($scope.question.content) === 'undefined' || $scope.question.content.length === 0) return;
-        
         if ($scope.question.type === 'multiplechoice')
             $scope.correctanswer = $scope.question.possibleanswers[$scope.selectedAnswer];
 
