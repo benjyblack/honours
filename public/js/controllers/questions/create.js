@@ -6,7 +6,7 @@ angular.module('mean.questions').controller('QuestionsCreateController', ['$scop
 
     $scope.create = function() {
         if ($scope.question.type === 'multiplechoice')
-            $scope.correctanswer = $scope.question.possibleanswers[$scope.selectedAnswer];
+            $scope.question.correctanswer = $scope.question.possibleanswers[$scope.selectedAnswerIndex];
 
         $scope.question.$save(function(response) {
             $location.path('questions/' + response._id);
