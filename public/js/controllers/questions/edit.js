@@ -9,6 +9,12 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
         });
     };
 
+    $scope.update = function() {
+        question.$update(function() {
+            $location.path('questions/' + question._id);
+        });        
+    };
+
     $scope.addAnswer = function() {
         var question = $scope.question;
 

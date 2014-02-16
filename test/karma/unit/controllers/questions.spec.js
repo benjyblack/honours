@@ -296,6 +296,33 @@
                 // test URL location to new object
                 expect($location.path()).toBe('/questions/' + putQuestionData()._id);
             }));
+
+            it('$scope.update() should PUT the updated question to the server'), inject(function(Questions){
+                // fixture rideshare
+                var putQuestionData = function() {
+                    return {
+                        _id: '525a8422f6d0f87f0e407a33',
+                        content:'Which is a fruit?',
+                        answers: [{content:'Tomato'}]
+                    };
+                };
+
+                // mock question object from form
+                var question = new Questions(putQuestionData());
+
+                // mock question in scope
+                scope.question = question;
+
+                // test PUT happens correctly
+                $httpBackend.expectPUT(/questions\/([0-9a-fA-F]{24})$/).respond();
+
+                // run controller
+                scope.update();
+                $httpBackend.flush();
+
+                // test URL location to new object
+                expect($location.path()).toBe('/questions/' + putQuestionData()._id);
+            });
         });
             // it('$scope.findOne() should create an array with one question object fetched ' +
             //     'from XHR using a questionId URL parameter', function() {
@@ -305,7 +332,7 @@
             //         // fixture response object
             //         var testQuestionData = function() {
             //             return {
-            //                 title: 'An Article about MEAN',
+            //                 title: 'An question about MEAN',
             //                 content: 'MEAN rocks!'
             //             };
             //         };
