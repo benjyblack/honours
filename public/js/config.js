@@ -7,11 +7,11 @@ angular.module('mean').config(['$routeProvider',
             controller: 'QuestionsListController'
         }).
         when('/questions/create', {
-            templateUrl: 'views/questions/create.html',
-            controller: 'QuestionsCreateController'
+            templateUrl: 'views/questions/edit.html',
+            controller: 'QuestionsEditController'
         }).
         when('/questions/:questionId/edit', {
-            templateUrl: 'views/questions/create.html',
+            templateUrl: 'views/questions/edit.html',
             controller: 'QuestionsEditController'
         }).
         when('/questions/:questionId/answer', {

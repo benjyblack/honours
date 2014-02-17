@@ -191,32 +191,34 @@
             });
 
 
-            it('$scope.addChoice() should add another possible answer', function() {
+            it('$scope.addPossibleAnswer() should add another possible answer', function() {
+                scope.possibleAnswers = [];
+
                 var numPossibleAnswersBeforeAdd = scope.question.possibleAnswers.length;
 
-                scope.addChoice();
+                scope.addPossibleAnswer();
 
                 expect(scope.question.possibleAnswers.length).toEqual(numPossibleAnswersBeforeAdd + 1);
             });
 
-            it('$scope.removeChoice() should remove a possible answer', function() {
+            it('$scope.removePossibleAnswer() should remove a possible answer', function() {
                 var exampleAnswer = 'AnswerA';
 
                 scope.question.possibleAnswers = [exampleAnswer];
 
-                scope.removeChoice(0);
+                scope.removePossibleAnswer(0);
 
                 expect(scope.question.possibleAnswers.length).toEqual(0);
             });
 
-            it('$scope.removeChoice() should set the selectedAnswerIndex to 0,' +
+            it('$scope.removePossibleAnswer() should set the selectedAnswerIndex to 0,' +
                 ' if the selected answer was removed', function() {
                 var exampleAnswers = [ 'AnswerA', 'AnswerB' ];
 
                 scope.question.possibleAnswers = exampleAnswers;
-                scope.selectedAnswer = 1;
+                scope.selectedAnswerIndex = 1;
 
-                scope.removeChoice(1);
+                scope.removePossibleAnswer(1);
 
                 expect(scope.selectedAnswerIndex).toEqual(0);
             });
