@@ -1,13 +1,13 @@
 <section>
     <h2>Ask a question </h2>
-    <form class="form-horizontal" data-ng-submit="create()">
+    <form class="form-horizontal" data-ng-submit="submit()">
         <div class="control-group">
             <label class="control-label" for="content">Question</label>
             <div class="controls">
                 <input type="text" data-ng-model="question.content" id="content" placeholder="Enter question here..." >
             </div>
         </div>
-        <div class="control-group">
+        <div class="control-group" ng-class="(action=='edit') ? 'disabled' : ''">
             <label class="control-label" for="text">Type</label>
             <div class="controls">
                 <div class="btn-group" data-toggle="buttons">
@@ -24,22 +24,12 @@
             </div>
         </div>
         <div class="control-group" ng-switch on="question.type">
-            <div ng-switch-when="text">
-                <label class="control-label" for="correctanswer-text">Correct Answer</label>
-                <div class="controls">
-                    <textarea data-ng-model="$parent.question.correctanswer" id="correctanswer" cols="30" rows="10" placeholder="Enter answer...">
-                    </textarea>
-                </div>
-            </div>
             <div ng-switch-when="truefalse">
                 <label class="control-label" for="correctanswer-truefalse">Correct Answer</label>
                 <div class="controls">
-                    <div class="btn-group" id="correctanswer-truefalse" data-toggle="buttons">
-                        <label class="btn">
-                            <input type="radio" name="options-truefalse" data-ng-model="$parent.question.correctanswer" value="true" id="correctanswer-true"> True
-                        </label>
-                        <label class="btn">
-                            <input type="radio" name="options-truefalse" data-ng-model="$parent.question.correctanswer" value="false" id="correctanswer-false"> False
+                    <div class="btn-group" data-toggle="buttons">
+                        <label ng-repeat="answer in $parent.question.possibleAnswers track by $index" class="btn">
+                            <input type="radio" name="options-truefalse" data-ng-model="$parent.$parent.question.correctAnswerIndex" value="{{$index}}"> {{answer}}
                         </label>
                     </div>
                 </div>
@@ -47,12 +37,12 @@
             <div ng-switch-when="multiplechoice">
                 <label class="control-label" for="correctanswer-multiplechoice">Possible Answers</label>
                 <div class="controls">
-                    [ <a href="" ng-click="addChoice()">add</a> ]
-                    <div ng-repeat="answer in $parent.question.possibleanswers track by $index">
-                        <input type="text" data-ng-model="$parent.question.possibleanswers[$index]" required>
-                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.selectedAnswerIndex" value="{{$index}}">
-                        <span ng-show='$parent.question.possibleanswers.length > 1' >
-                            [ <a href="" ng-click="removeChoice($index)">X</a> ]
+                    [ <a href="" ng-click="addPossibleAnswer()">add</a> ]
+                    <div ng-repeat="answer in $parent.question.possibleAnswers track by $index">
+                        <input type="text" data-ng-model="$parent.question.possibleAnswers[$index]" required>
+                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.question.correctAnswerIndex" value="{{$index}}">
+                        <span ng-show='$parent.question.possibleAnswers.length > 1' >
+                            [ <a href="" ng-click="removePossibleAnswer($index)">X</a> ]
                         </span>
                     </div>
                 </div>

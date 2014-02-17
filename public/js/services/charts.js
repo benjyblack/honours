@@ -43,9 +43,9 @@ angular.module('mean.questions').factory("Charts", function() {
       var numEntriesForPossibleAnswer = {};
       var i;
       
-      for(i=0; i<question.possibleanswers.length; i++)
+      for(i=0; i<question.possibleAnswers.length; i++)
       {
-        numEntriesForPossibleAnswer[question.possibleanswers[i].content] = 0;
+        numEntriesForPossibleAnswer[question.possibleAnswers[i].content] = 0;
       }
       for(i=0; i<question.answers.length; i++)
       {

@@ -5,3 +5,12 @@ h1 {
 ul.questions li:not(:last-child) {
     border-bottom:1px solid #ccc
 }
+
+.disabled {
+	pointer-events:none;
+	color:gray;
+}
+
+.disabled .btn {
+	color: #C9C5C5
+}

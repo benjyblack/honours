@@ -148,7 +148,7 @@
                 });
             }));
 
-            it('$scope.create() with valid form data should send a POST request ' +
+            it('$scope.submit() with valid form data should send a POST request ' +
                 'with the form input values and then ' +
                 'locate to new object URL', function() {
 
@@ -158,7 +158,7 @@
                             content: 'Why is the sky blue?',
                             type: 'text',
                             correctanswer: 'because',
-                            possibleanswers: []
+                            possibleAnswers: []
                         };
                     };
 
@@ -169,7 +169,7 @@
                             content: 'Why is the sky blue?',
                             type: 'text',
                             correctanswer: 'because',
-                            possibleanswers: []
+                            possibleAnswers: []
                         };
                     };
 
@@ -177,13 +177,13 @@
                     scope.question.content = 'Why is the sky blue?';
                     scope.question.type = 'text';
                     scope.question.correctanswer = 'because';
-                    scope.question.possibleanswers = [];
+                    scope.question.possibleAnswers = [];
 
                     // test post request is sent
                     $httpBackend.expectPOST('questions', postQuestionData()).respond(respondQuestionData());
 
                     // Run controller
-                    scope.create();
+                    scope.submit();
                     $httpBackend.flush();
 
                     // test URL location to new object
@@ -192,28 +192,28 @@
 
 
             it('$scope.addChoice() should add another possible answer', function() {
-                var numPossibleAnswersBeforeAdd = scope.question.possibleanswers.length;
+                var numPossibleAnswersBeforeAdd = scope.question.possibleAnswers.length;
 
                 scope.addChoice();
 
-                expect(scope.question.possibleanswers.length).toEqual(numPossibleAnswersBeforeAdd + 1);
+                expect(scope.question.possibleAnswers.length).toEqual(numPossibleAnswersBeforeAdd + 1);
             });
 
             it('$scope.removeChoice() should remove a possible answer', function() {
                 var exampleAnswer = 'AnswerA';
 
-                scope.question.possibleanswers = [exampleAnswer];
+                scope.question.possibleAnswers = [exampleAnswer];
 
                 scope.removeChoice(0);
 
-                expect(scope.question.possibleanswers.length).toEqual(0);
+                expect(scope.question.possibleAnswers.length).toEqual(0);
             });
 
             it('$scope.removeChoice() should set the selectedAnswerIndex to 0,' +
                 ' if the selected answer was removed', function() {
                 var exampleAnswers = [ 'AnswerA', 'AnswerB' ];
 
-                scope.question.possibleanswers = exampleAnswers;
+                scope.question.possibleAnswers = exampleAnswers;
                 scope.selectedAnswer = 1;
 
                 scope.removeChoice(1);

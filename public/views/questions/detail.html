@@ -7,15 +7,15 @@
     	<a class="btn" href="/#!/questions/{{question._id}}/edit">Edit</a>
         <a class="btn" href="/#!" data-ng-click="delete()">Delete</a>
     </div>
-    <div data-ng-show="question.possibleanswers.length > 0">
+    <div data-ng-show="question.possibleAnswers.length > 0">
         <h3>Possible Answers</h3>
-        <ul ng-repeat="possibleanswer in question.possibleanswers">
-            <li class="possibleanswer">{{possibleanswer}}</li>
+        <ul ng-repeat="possibleAnswer in question.possibleAnswers">
+            <li class="possibleAnswer">{{possibleAnswer}}</li>
         </ul>
     </div>
-    <div data-ng-show="global.user.type === 'Professor'">
+    <div data-ng-show="global.user.type === 'Professor' && question.type !== 'text'">
         <h3>Correct Answer</h3>
-        <span>{{question.correctanswer}}</span>
+        <span>{{question.possibleAnswers[question.correctAnswerIndex]}}</span>
     </div>
     <h3>Answers</h3>
     <div data-ng-show="visualization.type === 'chart'">

@@ -36,8 +36,8 @@ var QuestionSchema = new Schema({
         trim: true
     },
     type: String,
-    correctanswer: Schema.Types.Mixed,
-    possibleanswers: Schema.Types.Mixed,
+    correctAnswerIndex: Schema.Types.Mixed,
+    possibleAnswers: Schema.Types.Mixed,
     answers: [AnswerSchema],
     user: {
         type: Schema.ObjectId,
