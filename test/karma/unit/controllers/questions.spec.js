@@ -8,7 +8,9 @@
             $routeParams,
             $location,
             $controllerConstructor,
-            mockVisualizations;
+            $q,
+            mockVisualizations,
+            mockQuestionsInit;
 
         // The $resource service augments the response object with methods for updating and deleting the resource.
         // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
@@ -26,7 +28,7 @@
         // Load the controllers module
         beforeEach(module('mean'));
 
-        beforeEach(inject(function($controller, $rootScope, _$location_, _$routeParams_, _$httpBackend_) {
+        beforeEach(inject(function($controller, $rootScope, _$location_, _$routeParams_, _$httpBackend_, _$q_) {
             scope = $rootScope.$new();
 
             $routeParams = _$routeParams_;
@@ -37,8 +39,19 @@
 
             $controllerConstructor = $controller;
 
-            mockVisualizations = { 
-                createVisualization: jasmine.createSpy('createTrueFalseChart') 
+            $q = _$q_;
+
+            mockVisualizations = {
+                createVisualization: jasmine.createSpy('createTrueFalseChart')
+            };
+
+            mockQuestionsInit = {
+                init: function() {
+                    var deferred = $q.defer();
+                    deferred.resolve();
+
+                    return deferred.promise;
+                }
             };
         }));
 
@@ -134,96 +147,6 @@
 
         });
 
-        describe('QuestionsCreateController', function() {
-
-            // Initialize the controller
-            var QuestionsCreateController;
-
-            // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
-            // This allows us to inject a service but then attach it to a variable
-            // with the same name as the service.
-            beforeEach(inject(function($controller) {
-                QuestionsCreateController = $controller('QuestionsCreateController', {
-                    $scope: scope
-                });
-            }));
-
-            it('$scope.submit() with valid form data should send a POST request ' +
-                'with the form input values and then ' +
-                'locate to new object URL', function() {
-
-                    // fixture expected POST data
-                    var postQuestionData = function() {
-                        return {
-                            content: 'Why is the sky blue?',
-                            type: 'text',
-                            correctanswer: 'because',
-                            possibleAnswers: []
-                        };
-                    };
-
-                    // fixture expected response data
-                    var respondQuestionData = function() {
-                        return {
-                            _id: '525cf20451979dea2c000001',
-                            content: 'Why is the sky blue?',
-                            type: 'text',
-                            correctanswer: 'because',
-                            possibleAnswers: []
-                        };
-                    };
-
-                    // fixture mock form input values
-                    scope.question.content = 'Why is the sky blue?';
-                    scope.question.type = 'text';
-                    scope.question.correctanswer = 'because';
-                    scope.question.possibleAnswers = [];
-
-                    // test post request is sent
-                    $httpBackend.expectPOST('questions', postQuestionData()).respond(respondQuestionData());
-
-                    // Run controller
-                    scope.submit();
-                    $httpBackend.flush();
-
-                    // test URL location to new object
-                    expect($location.path()).toBe('/questions/' + respondQuestionData()._id);
-            });
-
-
-            it('$scope.addPossibleAnswer() should add another possible answer', function() {
-                scope.possibleAnswers = [];
-
-                var numPossibleAnswersBeforeAdd = scope.question.possibleAnswers.length;
-
-                scope.addPossibleAnswer();
-
-                expect(scope.question.possibleAnswers.length).toEqual(numPossibleAnswersBeforeAdd + 1);
-            });
-
-            it('$scope.removePossibleAnswer() should remove a possible answer', function() {
-                var exampleAnswer = 'AnswerA';
-
-                scope.question.possibleAnswers = [exampleAnswer];
-
-                scope.removePossibleAnswer(0);
-
-                expect(scope.question.possibleAnswers.length).toEqual(0);
-            });
-
-            it('$scope.removePossibleAnswer() should set the selectedAnswerIndex to 0,' +
-                ' if the selected answer was removed', function() {
-                var exampleAnswers = [ 'AnswerA', 'AnswerB' ];
-
-                scope.question.possibleAnswers = exampleAnswers;
-                scope.selectedAnswerIndex = 1;
-
-                scope.removePossibleAnswer(1);
-
-                expect(scope.selectedAnswerIndex).toEqual(0);
-            });
-        });
-
         describe('QuestionsEditController', function() {
 
             // Initialize the controller
@@ -232,98 +155,198 @@
             // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
             // This allows us to inject a service but then attach it to a variable
             // with the same name as the service.
-            beforeEach(inject(function($controller) {
-                QuestionsEditController = $controller('QuestionsEditController', {
-                    $scope: scope
-                });
-            }));
 
-            it('$scope.findOne() should return a single question object fetched ' +
-                'from XHR using a questionId URL parameter', function() {
-                    // fixture URL parament
-                    $routeParams.questionId = '525a8422f6d0f87f0e407a33';
+            describe('QuestionsEditController: Create', function() {
+                beforeEach(inject(function($controller) {
+                    QuestionsEditController = $controller('QuestionsEditController', {
+                        $scope: scope,
+                        QuestionsInit: mockQuestionsInit
+                    });
+                }));
 
-                    // fixture response object
-                    var testQuestionData = function() {
-                        return {
-                            title: 'A question about MEAN',
-                            content: 'MEAN rocks!',
-                            type: 'truefalse'
+                it('$scope.submit() with valid form data should send a POST request ' +
+                    'with the form input values and then ' +
+                    'locate to new object URL', function() {
+
+                    scope.promise.then(function() {
+                        // fixture expected POST data
+                        var postQuestionData = function() {
+                            return {
+                                content: 'Why is the sky blue?',
+                                type: 'text',
+                                correctanswer: 'because',
+                                possibleAnswers: []
+                            };
                         };
-                    };
 
-                    // test expected GET request with response object
-                    $httpBackend.expectGET(/questions\/([0-9a-fA-F]{24})$/).respond(testQuestionData());
+                        // fixture expected response data
+                        var respondQuestionData = function() {
+                            return {
+                                _id: '525cf20451979dea2c000001',
+                                content: 'Why is the sky blue?',
+                                type: 'text',
+                                correctanswer: 'because',
+                                possibleAnswers: []
+                            };
+                        };
 
-                    // run controller
-                    scope.findOne();
-                    $httpBackend.flush();
+                        // fixture mock form input values
+                        scope.question.content = 'Why is the sky blue?';
+                        scope.question.type = 'text';
+                        scope.question.correctanswer = 'because';
+                        scope.question.possibleAnswers = [];
 
-                    // test scope value
-                    expect(scope.question).toEqualData(testQuestionData());
+                        // test post request is sent
+                        $httpBackend.expectPOST('questions', postQuestionData()).respond(respondQuestionData());
+
+                        // Run controller
+                        scope.submit();
+                        $httpBackend.flush();
+
+                        // test URL location to new object
+                        expect($location.path()).toBe('/questions/' + respondQuestionData()._id);
+
+
+                    });
+                });
+
+
+                it('$scope.addPossibleAnswer() should add another possible answer', function() {
+                    scope.promise.then(function() {
+                        scope.question.possibleAnswers = [];
+
+                        var numPossibleAnswersBeforeAdd = scope.question.possibleAnswers.length;
+
+                        scope.addPossibleAnswer();
+
+                        expect(scope.question.possibleAnswers.length).toEqual(numPossibleAnswersBeforeAdd + 1);
+                    });
+                });
+
+                it('$scope.removePossibleAnswer() should remove a possible answer', function() {
+                    scope.promise.then(function() {
+                        var exampleAnswer = 'AnswerA';
+
+                        scope.question.possibleAnswers = [exampleAnswer];
+
+                        scope.removePossibleAnswer(0);
+
+                        expect(scope.question.possibleAnswers.length).toEqual(0);
+                    });
+                });
+
+                it('$scope.removePossibleAnswer() should set the correctAnswerIndex to 0,' +
+                    ' if the selected answer was removed', function() {
+                    scope.promise.then(function() {
+                        scope.question.possibleAnswers = [ 'AnswerA', 'AnswerB' ];
+                        scope.question.correctAnswerIndex = 1;
+
+                        scope.removePossibleAnswer(1);
+
+                        expect(scope.question.correctAnswerIndex).toEqual(0);
+                    });
+                });
             });
 
-            it('$scope.addAnswer() should PUT an answer and relocate you', inject(function(Questions) {
+            describe('QuestionsEditController: Edit', function() {
+                beforeEach(inject(function($controller) {
+                    $routeParams.questionId = '525a8422f6d0f87f0e407a33';
+                    QuestionsEditController = $controller('QuestionsEditController', {
+                        $scope: scope,
+                        QuestionsInit: mockQuestionsInit,
+                        $routeParams: $routeParams
+                    });
+                }));
 
-                // fixture rideshare
-                var putQuestionData = function() {
-                    return {
-                        _id: '525a8422f6d0f87f0e407a33',
-                        content:'Which is a fruit?',
-                        answers: [{content:'Tomato'}]
-                    };
-                };
+                it('$scope.init() should return a single question object fetched ' +
+                'from XHR using a questionId URL parameter', function() {
+                    scope.promise.then(function() {
+                        // fixture response object
+                        var testQuestionData = function() {
+                            return {
+                                title: 'A question about MEAN',
+                                content: 'MEAN rocks!',
+                                type: 'truefalse'
+                            };
+                        };
 
-                // mock article object from form
-                var question = new Questions(putQuestionData());
+                        // test expected GET request with response object
+                        $httpBackend.expectGET(/questions\/([0-9a-fA-F]{24})$/).respond(testQuestionData());
 
-                // mock article in scope
-                scope.question = question;
+                        // run controller
+                        scope.init();
+                        $httpBackend.flush();
 
-                // test PUT happens correctly
-                $httpBackend.expectPUT(/questions\/([0-9a-fA-F]{24})$/).respond();
+                        // test scope value
+                        expect(scope.question).toEqualData(testQuestionData());
+                    });
+                });
 
-                // testing the body data is out for now until an idea for testing the dynamic updated array value is figured out
-                //$httpBackend.expectPUT(/articles\/([0-9a-fA-F]{24})$/, putArticleData()).respond();
-                /*
-                Error: Expected PUT /articles\/([0-9a-fA-F]{24})$/ with different data
-                EXPECTED: {"_id":"525a8422f6d0f87f0e407a33","title":"An Article about MEAN","to":"MEAN is great!"}
-                GOT:      {"_id":"525a8422f6d0f87f0e407a33","title":"An Article about MEAN","to":"MEAN is great!","updated":[1383534772975]}
-                */
+                it('$scope.addAnswer() should PUT an answer and relocate you', inject(function(Questions) {
+                    scope.promise.then(function() {
+                        // fixture rideshare
+                        var putQuestionData = function() {
+                            return {
+                                _id: '525a8422f6d0f87f0e407a33',
+                                content:'Which is a fruit?',
+                                answers: [{content:'Tomato'}]
+                            };
+                        };
 
-                // run controller
-                scope.addAnswer();
-                $httpBackend.flush();
+                        // mock article object from form
+                        var question = new Questions(putQuestionData());
 
-                // test URL location to new object
-                expect($location.path()).toBe('/questions/' + putQuestionData()._id);
-            }));
+                        // mock article in scope
+                        scope.question = question;
 
-            it('$scope.update() should PUT the updated question to the server'), inject(function(Questions){
-                // fixture rideshare
-                var putQuestionData = function() {
-                    return {
-                        _id: '525a8422f6d0f87f0e407a33',
-                        content:'Which is a fruit?',
-                        answers: [{content:'Tomato'}]
-                    };
-                };
+                        // test PUT happens correctly
+                        $httpBackend.expectPUT(/questions\/([0-9a-fA-F]{24})$/).respond();
 
-                // mock question object from form
-                var question = new Questions(putQuestionData());
+                        // testing the body data is out for now until an idea for testing the dynamic updated array value is figured out
+                        //$httpBackend.expectPUT(/articles\/([0-9a-fA-F]{24})$/, putArticleData()).respond();
+                        /*
+                        Error: Expected PUT /articles\/([0-9a-fA-F]{24})$/ with different data
+                        EXPECTED: {"_id":"525a8422f6d0f87f0e407a33","title":"An Article about MEAN","to":"MEAN is great!"}
+                        GOT:      {"_id":"525a8422f6d0f87f0e407a33","title":"An Article about MEAN","to":"MEAN is great!","updated":[1383534772975]}
+                        */
 
-                // mock question in scope
-                scope.question = question;
+                        // run controller
+                        scope.addAnswer();
+                        $httpBackend.flush();
 
-                // test PUT happens correctly
-                $httpBackend.expectPUT(/questions\/([0-9a-fA-F]{24})$/).respond();
+                        // test URL location to new object
+                        expect($location.path()).toBe('/questions/' + putQuestionData()._id);
+                    });
+                }));
 
-                // run controller
-                scope.update();
-                $httpBackend.flush();
+                it('$scope.update() should PUT the updated question to the server', inject(function(Questions){
+                    scope.promise.then(function() {
+                        // fixture rideshare
+                        var putQuestionData = function() {
+                            return {
+                                _id: '525a8422f6d0f87f0e407a33',
+                                content:'Which is a fruit?',
+                                answers: [{content:'Tomato'}]
+                            };
+                        };
 
-                // test URL location to new object
-                expect($location.path()).toBe('/questions/' + putQuestionData()._id);
+                        // mock question object from form
+                        var question = new Questions(putQuestionData());
+
+                        // mock question in scope
+                        scope.question = question;
+
+                        // test PUT happens correctly
+                        $httpBackend.expectPUT(/questions\/([0-9a-fA-F]{24})$/).respond();
+
+                        // run controller
+                        scope.update();
+                        $httpBackend.flush();
+
+                        // test URL location to new object
+                        expect($location.path()).toBe('/questions/' + putQuestionData()._id);
+                    });
+                }));
             });
         });
             // it('$scope.findOne() should create an array with one question object fetched ' +
