@@ -8,7 +8,7 @@ angular.module('mean.questions').factory('WordClouds', function() {
 
         var numTotalTerms = 0;
 
-        var ignoredTerms = ['the', 'and', 'an', 'of', 'at', 'because', 'it', 'like', 'was', 'would'];
+        var ignoredTerms = ['the', 'and', 'an', 'of', 'at', 'because', 'it', 'like', 'was', 'would', 'a'];
 
         answers.forEach(function(answer) {
             var termsForThisAnswer = [];
@@ -31,7 +31,7 @@ angular.module('mean.questions').factory('WordClouds', function() {
         angular.forEach(dictionary, function(value, key) {
             formattedArray.push({
                 text: key,
-                size: (value/numTotalTerms) * 300 // size is weighted proportionally to the frequency of the term
+                size: (value/numTotalTerms) * 100 // size is weighted proportionally to the frequency of the term
             });
         });
 

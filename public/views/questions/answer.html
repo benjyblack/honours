@@ -31,7 +31,7 @@
                 <label class="control-label" for="answer-multiplechoice">Possible Answers</label>
                 <div class="controls">
                     <div ng-repeat="possibleAnswer in $parent.question.possibleAnswers track by $index">
-                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.answer" value="{{possibleAnswer}}"> {{possibleanswer}}
+                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.answer" value="{{possibleAnswer}}"> {{possibleAnswer}}
                     </div>
                 </div>
             </div>

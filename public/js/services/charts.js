@@ -45,7 +45,7 @@ angular.module('mean.questions').factory("Charts", function() {
       
       for(i=0; i<question.possibleAnswers.length; i++)
       {
-        numEntriesForPossibleAnswer[question.possibleAnswers[i].content] = 0;
+        numEntriesForPossibleAnswer[question.possibleAnswers[i]] = 0;
       }
       for(i=0; i<question.answers.length; i++)
       {
@@ -53,6 +53,7 @@ angular.module('mean.questions').factory("Charts", function() {
       }
 
       var rows = [];
+      debugger;
 
       for (var prop in numEntriesForPossibleAnswer)
       {
