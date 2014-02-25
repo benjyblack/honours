@@ -7,7 +7,6 @@
             $httpBackend,
             $routeParams,
             $location,
-            $controllerConstructor,
             $q,
             mockVisualizations,
             mockQuestionsInit;
@@ -37,22 +36,7 @@
 
             $location = _$location_;
 
-            $controllerConstructor = $controller;
-
             $q = _$q_;
-
-            mockVisualizations = {
-                createVisualization: jasmine.createSpy('createTrueFalseChart')
-            };
-
-            mockQuestionsInit = {
-                init: function() {
-                    var deferred = $q.defer();
-                    deferred.resolve();
-
-                    return deferred.promise;
-                }
-            };
         }));
 
         describe('QuestionsListController', function() {
@@ -60,7 +44,7 @@
 
             beforeEach(inject(function($controller) {
                 // Initialize the controller
-                QuestionsListController = $controllerConstructor('QuestionsListController', {
+                QuestionsListController = $controller('QuestionsListController', {
                     $scope: scope
                 });
             }));
@@ -96,6 +80,11 @@
             // This allows us to inject a service but then attach it to a variable
             // with the same name as the service.
             beforeEach(inject(function($controller) {
+
+                mockVisualizations = {
+                    createVisualization: jasmine.createSpy('createTrueFalseChart')
+                };
+
                 QuestionsDetailController = $controller('QuestionsDetailController', {
                     $scope: scope,
                     Visualizations: mockVisualizations
@@ -152,12 +141,19 @@
             // Initialize the controller
             var QuestionsEditController;
 
-            // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
-            // This allows us to inject a service but then attach it to a variable
-            // with the same name as the service.
+            beforeEach(inject(function(QuestionsInit) {
+                mockQuestionsInit = QuestionsInit;
+                  
+                spyOn(QuestionsInit, 'init').andCallFake(function() {
+                        var deferred = $q.defer();
+                        deferred.resolve();
+
+                        return deferred.promise;
+                });
+            }));
 
             describe('QuestionsEditController: Create', function() {
-                beforeEach(inject(function($controller) {
+                beforeEach(inject(function($controller, QuestionsInit) {
                     QuestionsEditController = $controller('QuestionsEditController', {
                         $scope: scope,
                         QuestionsInit: mockQuestionsInit
@@ -205,8 +201,6 @@
 
                         // test URL location to new object
                         expect($location.path()).toBe('/questions/' + respondQuestionData()._id);
-
-
                     });
                 });
 
