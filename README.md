@@ -1,4 +1,4 @@
-# Honours Project
+# LectureImprov
 
 This is a project for COMP4905 being worked on by Ben Black.  
 

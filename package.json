@@ -1,6 +1,6 @@
 {
-    "name": "honours",
-    "description": "Honours Project",
+    "name": "LectureImprov",
+    "description": "An innovative, real-time classroom learning tool for getting the most out of your lectures. Built with the MEAN stack.",
     "version": "0.1.0",
     "private": false,
     "author": "Ben Black",
