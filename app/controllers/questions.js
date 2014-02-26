@@ -32,7 +32,7 @@ exports.create = function(req, res) {
                 question: question
             });
         } else {
-            res.jsonp(question);
+            res.jsonp(201, question);
         }
     });
 };
