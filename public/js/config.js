@@ -22,12 +22,8 @@ angular.module('mean').config(['$routeProvider',
             templateUrl: 'views/questions/detail.html',
             controller: 'QuestionsDetailController'
         }).
-        when('/', {
-            templateUrl: 'views/index.html',
-            controller: 'IndexController'
-        }).
         otherwise({
-            redirectTo: '/'
+            redirectTo: '/questions'
         });
     }
 ]);
