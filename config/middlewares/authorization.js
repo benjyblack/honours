@@ -24,14 +24,8 @@ exports.user = {
  * Question authorizations routing middleware
  */
 exports.question = {
-    hasAuthorizationToEdit: function(req, res, next) {
-        // if (req.user.type !== 'Student') {
-        //     return res.send(401, 'User is not authorized');
-        // }
-        next();
-    },
-    hasAuthorizationToDelete: function(req, res, next) {
-        if (req.user.type === 'Student') {
+    hasAuthorizationToUpdateQuestions: function(req, res, next) {
+        if (req.user.type !== 'Professor') {
             return res.send(401, 'User is not authorized');
         }
         next();
