@@ -31,7 +31,7 @@ angular.module('mean.questions').factory('WordClouds', function() {
         angular.forEach(dictionary, function(value, key) {
             formattedArray.push({
                 text: key,
-                size: (value/numTotalTerms) * 100 // size is weighted proportionally to the frequency of the term
+                size: (value/numTotalTerms) * 300 // size is weighted proportionally to the frequency of the term
             });
         });
 
