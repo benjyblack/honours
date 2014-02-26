@@ -31,7 +31,7 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
             $scope.question.correctAnswerIndex = 0;
     };
 
-    $scope.addAnswer = function() {
+    $scope.submitAnswer = function() {
         var question = $scope.question;
 
         // Add answer

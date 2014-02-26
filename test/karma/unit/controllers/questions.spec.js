@@ -276,7 +276,7 @@
                     });
                 });
 
-                it('$scope.addAnswer() should PUT an answer and relocate you', inject(function(Questions) {
+                it('$scope.submitAnswer() should PUT an answer and relocate you', inject(function(Questions) {
                     scope.promise.then(function() {
                         // fixture rideshare
                         var putQuestionData = function() {
@@ -305,7 +305,7 @@
                         */
 
                         // run controller
-                        scope.addAnswer();
+                        scope.submitAnswer();
                         $httpBackend.flush();
 
                         // test URL location to new object
