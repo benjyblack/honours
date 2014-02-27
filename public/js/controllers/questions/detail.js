@@ -6,8 +6,21 @@ angular.module('mean.questions').controller('QuestionsDetailController', ['$scop
             questionId: $routeParams.questionId
         }, function(question) {
             $scope.question = question;
+
+            $scope.nominatedButtonActive = $scope.question.nominatedBy.indexOf($scope.global.user._id) != -1;
+
             $scope.visualization =  Visualizations.createVisualization(question);
         });
+    };
+
+    $scope.nominate = function() {
+        var question = $scope.question;
+
+        $scope.nominatedButtonActive = !$scope.nominatedButtonActive;
+
+        question.isNominated = $scope.nominatedButtonActive;
+
+        question.$update();
     };
 
     $scope.delete = function() {

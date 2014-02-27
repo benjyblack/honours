@@ -45,6 +45,23 @@ exports.update = function(req, res) {
 
     question = _.extend(question, req.body);
 
+    // Populate the question with the nominatedBy field
+    question.populate('nominatedBy');
+
+    // If question has been nominated by the user, add the current user to the nominatedBy array
+    if ( req.question.isNominated )
+    {
+        if ( question.nominatedBy.indexOf(req.user) === -1 )
+            question.nominatedBy.push(req.user);
+    }
+    // If question not nominated by this user, then check to see if they had previously nominated it, if they had, remove it
+    else
+    {
+        var index = question.nominatedBy.indexOf(req.user);
+        if ( index != -1 )
+            question.nominatedby.splice(index, 1);
+    }
+
     // If a new answer has been added, mark the current user as the owner of it
     for (var i = 0; i < req.body.answers.length; i++) {
         if (req.body.answers[i].hasOwnProperty('isNew')) {
@@ -85,7 +102,7 @@ exports.show = function(req, res) {
  * List of Questions
  */
 exports.all = function(req, res) {
-    Question.find().sort('-created').populate('user', 'name username type').exec(function(err, questions) {
+    Question.find().sort('-created').populate('user', 'name username type nominatedBy').exec(function(err, questions) {
         if (err) {
             res.render('error', {
                 status: 500
