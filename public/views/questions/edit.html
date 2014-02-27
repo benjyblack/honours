@@ -50,6 +50,12 @@
             <div ng-switch-default>
             </div>
         </div>
+        <div class="control-group" ng-show="global.user.type === 'Student'">
+            <label for="anonymous-checkbox" class="control-label">Ask anonymously?</label>
+            <div class="controls">
+                <input type="checkbox" id="anonymous-checkbox" ng-model="question.isAnonymous">
+            </div>
+        </div>
         <div class="control-group">
             <div class="controls">
                 <input type="submit" class="btn">

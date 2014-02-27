@@ -85,7 +85,7 @@ exports.show = function(req, res) {
  * List of Questions
  */
 exports.all = function(req, res) {
-    Question.find().sort('-created').populate('user', 'name username').exec(function(err, questions) {
+    Question.find().sort('-created').populate('user', 'name username type').exec(function(err, questions) {
         if (err) {
             res.render('error', {
                 status: 500

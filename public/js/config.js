@@ -2,7 +2,7 @@
 angular.module('mean').config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-        when('/questions', {
+        when('/questions/list/:type', {
             templateUrl: 'views/questions/list.html',
             controller: 'QuestionsListController'
         }).
@@ -23,7 +23,7 @@ angular.module('mean').config(['$routeProvider',
             controller: 'QuestionsDetailController'
         }).
         otherwise({
-            redirectTo: '/questions'
+            redirectTo: '/questions/list/professor'
         });
     }
 ]);

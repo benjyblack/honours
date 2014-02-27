@@ -39,6 +39,7 @@ var QuestionSchema = new Schema({
     correctAnswerIndex: Schema.Types.Mixed,
     possibleAnswers: Schema.Types.Mixed,
     answers: [AnswerSchema],
+    isAnonymous:  { type: Boolean, default: false },
     user: {
         type: Schema.ObjectId,
         ref: 'User'
