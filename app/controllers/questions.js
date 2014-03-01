@@ -51,15 +51,15 @@ exports.update = function(req, res) {
     // If question has been nominated by the user, add the current user to the nominatedBy array
     if ( req.question.isNominated )
     {
-        if ( question.nominatedBy.indexOf(req.user) === -1 )
+        if ( question.nominatedBy.indexOf(req.user._id) === -1 )
             question.nominatedBy.push(req.user);
     }
     // If question not nominated by this user, then check to see if they had previously nominated it, if they had, remove it
     else
     {
-        var index = question.nominatedBy.indexOf(req.user);
+        var index = question.nominatedBy.indexOf(req.user._id);
         if ( index != -1 )
-            question.nominatedby.splice(index, 1);
+            question.nominatedBy.splice(index, 1);
     }
 
     // If a new answer has been added, mark the current user as the owner of it
