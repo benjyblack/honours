@@ -11,9 +11,9 @@ var mongoose = require('mongoose'),
  */
 var UserSchema = new Schema({
     type: String,
-    name: String,
-    email: String,
-    username: {
+    firstName: String,
+    lastName: String,
+    email: {
         type: String,
         unique: true
     },
@@ -40,17 +40,17 @@ var validatePresenceOf = function(value) {
     return value && value.length;
 };
 
-UserSchema.path('name').validate(function(name) {
-    return name.length;
-}, 'Name cannot be blank');
+UserSchema.path('firstName').validate(function(firstName) {
+    return firstName.length;
+}, 'First name cannot be blank');
+
+UserSchema.path('lastName').validate(function(lastName) {
+    return lastName.length;
+}, 'Last name cannot be blank');
 
 UserSchema.path('email').validate(function(email) {
     return email.length;
 }, 'Email cannot be blank');
-
-UserSchema.path('username').validate(function(username) {
-    return username.length;
-}, 'Username cannot be blank');
 
 UserSchema.path('hashed_password').validate(function(hashed_password) {
     return hashed_password.length;

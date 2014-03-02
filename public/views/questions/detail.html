@@ -1,6 +1,6 @@
 <section data-ng-init="findOne();">
     <h2>{{question.content}}</h2>
-    <p ng-hide="question.isAnonymous">Asked by: {{question.user.name}}</p>
+    <p ng-hide="question.isAnonymous">Asked by: {{question.user.firstName}} {{global.user.lastName}}</p>
     <div data-ng-show="global.user.type == 'Student'">
     	<a class="btn" href="/#!/questions/{{question._id}}/answer">Answer</a>
         <a class="btn" ng-click="nominate()" ng-class="{active: nominatedButtonActive}">+1</a>

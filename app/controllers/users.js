@@ -63,7 +63,7 @@ exports.create = function(req, res) {
             switch(err.code){
                 case 11000:
                 case 11001:
-                    message = 'Username already exists';
+                    message = 'Email already exists';
                     break;
                 default: 
                     message = 'Please fill all the required fields';
@@ -86,9 +86,9 @@ exports.create = function(req, res) {
  */
 exports.createProfessor = function(req, res) {
 
-    req.body.name = "Professor";
+    req.body.firstName = "Mr";
+    req.body.lastName = "Professor"
     req.body.email = "professor@gmail.com";
-    req.body.username = "Professor";
     req.body.password = "professor";
     req.body.type = 'Professor';
 
@@ -101,7 +101,7 @@ exports.createProfessor = function(req, res) {
             switch(err.code){
                 case 11000:
                 case 11001:
-                    message = 'Username already exists';
+                    message = 'Email already exists';
                     break;
                 default: 
                     message = 'Please fill all the required fields';

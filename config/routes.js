@@ -21,6 +21,10 @@ module.exports = function(app, passport, auth) {
     //Finish with setting up the userId param
     app.param('userId', users.user);
 
+    //Admin routes
+    var admin = require('../app/controllers/admin');
+    app.post('/admin/import', auth.admin.hasAuthorizationToImport, admin.import);
+
     //Questions Routes
     var questions = require('../app/controllers/questions');
     app.get('/questions', auth.requiresLogin, questions.all);

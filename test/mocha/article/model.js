@@ -16,9 +16,9 @@ describe('<Unit Test>', function() {
     describe('Model Article:', function() {
         beforeEach(function(done) {
             user = new User({
-                name: 'Full name',
+                firstName: 'First',
+                lastName: 'Last',
                 email: 'test@test.com',
-                username: 'user',
                 password: 'password'
             });
 

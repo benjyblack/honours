@@ -63,8 +63,8 @@ QuestionSchema.path('content').validate(function(content) {
 QuestionSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('user', 'name username')
-    .populate('answers.user', 'name username').exec(cb);
+    }).populate('user', 'name firstName lastName email')
+    .populate('answers.user', 'name firstName lastName email').exec(cb);
 };
 
 mongoose.model('Answer', AnswerSchema);

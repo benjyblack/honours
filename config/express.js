@@ -37,6 +37,9 @@ module.exports = function(app, passport, db) {
         //cookieParser should be above session
         app.use(express.cookieParser());
 
+        app.use(express.bodyParser());
+        app.use(express.multipart());
+
         // request body parsing middleware should be above methodOverride
         app.use(express.urlencoded());
         app.use(express.json());

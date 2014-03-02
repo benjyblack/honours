@@ -20,6 +20,20 @@ exports.user = {
     }
 };
 
+
+/**
+ * Admin authorizations routing middleware
+ */
+exports.admin = {
+    hasAuthorizationToImport: function(req, res, next) {
+        // TODO: Add proper authentication for students
+        if (req.user.type !== 'Professor') {
+            return res.send(401, 'User is not authorized');
+        }
+        next();
+    }
+};
+
 /**
  * Question authorizations routing middleware
  */

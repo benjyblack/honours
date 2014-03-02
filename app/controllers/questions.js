@@ -102,7 +102,7 @@ exports.show = function(req, res) {
  * List of Questions
  */
 exports.all = function(req, res) {
-    Question.find().sort('-created').populate('user', 'name username type nominatedBy').exec(function(err, questions) {
+    Question.find().sort('-created').populate('user', 'firstName lastName email type nominatedBy').exec(function(err, questions) {
         if (err) {
             res.render('error', {
                 status: 500

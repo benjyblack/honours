@@ -22,6 +22,14 @@ angular.module('mean').config(['$routeProvider',
             templateUrl: 'views/questions/detail.html',
             controller: 'QuestionsDetailController'
         }).
+        when('/admin/import', {
+            templateUrl: 'views/admin/import.html',
+            controller: 'AdminImportController'
+        }).
+        when('/admin/controls', {
+            templateUrl: 'views/admin/controls.html',
+            controller: 'AdminControlsController'
+        }).
         otherwise({
             redirectTo: '/questions/list/professor'
         });
