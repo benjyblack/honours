@@ -17,7 +17,7 @@ angular.module('mean.admin').controller('AdminImportController', ['$scope', '$ro
     uploader.bind('complete', function (event, xhr, item, response) {
         console.info('Complete', xhr, item, response);
 
-        if (xhr.status === 201) $scope.message = 'Successfully added ' + response.numSuccess + ' users!';
-        else $scope.message = 'Added ' + response.numSuccess + ' users, failed to add ' + response.numFailure + ' others';
+        if (xhr.status === 201) $scope.message = response.message;
+        else $scope.message = response.message;
     });
 }]);

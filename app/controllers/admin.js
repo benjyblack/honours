@@ -51,14 +51,14 @@ exports.import = function(req, res) {
                 recordsIteratedThrough++;
                 if (recordsIteratedThrough === numRecords) {
                     if (failedUserCount === 0)
-                        res.jsonp(201, { numSuccess: numRecords });
+                        res.jsonp(201, { message: 'Successfully added ' + numRecords + ' users' });
                     else
-                        res.jsonp(500, { numSuccess: (numRecords - failedUserCount), numFailure: failedUserCount });
+                        res.jsonp(500, { message: 'Failed to add ' + failedUserCount + '/' + numRecords + '  users' });
                 }
             });
         });
     })
     .on('error', function(error){
-        console.log(error.message);
+        res.jsonp(500, { message: 'Error parsing CSV file: ' + error.message });
     });
 };
