@@ -35,7 +35,8 @@
     "grunt-cli": "latest",
     "grunt-env": "latest",
     "csv": "~0.3.7",
-    "randomstring": "~1.0.3"
+    "randomstring": "~1.0.3",
+    "mailchimp-api": "~2.0.4"
   },
   "devDependencies": {
     "supertest": "latest",
