@@ -6,10 +6,11 @@ var mongoose = require('mongoose'),
     randomstring = require('randomstring'),
     User = mongoose.model('User'),
     csv = require('csv'),
-    mcapi = require('mailchimp-api');
+    mcapi = require('mailchimp-api'),
+    config = require('../../config/config');
 
 
-mc = new mcapi.Mailchimp('e60376a181c62f3ddcb244acfd840ae1-us3');
+mc = new mcapi.Mailchimp(config.mcAPIKey);
 
 /**
  * Import CSV
@@ -56,7 +57,7 @@ exports.import = function(req, res) {
                 if (recordsIteratedThrough === numRecords) {
                     // Subscribe successful users asynchronously
                     // TODO: Handle errors in subscription
-                    subscribeUsersToList(successfulUsers, '59aa66bc5c');
+                    subscribeUsersToList(successfulUsers, config.mcListId);
 
                     if (failedUsers.length === 0) {
                         res.jsonp(201, { message: 'Successfully added ' + numRecords + ' users' });
