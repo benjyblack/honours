@@ -36,7 +36,7 @@
     "grunt-env": "latest",
     "csv": "~0.3.7",
     "randomstring": "~1.0.3",
-    "mailchimp-api": "~2.0.4"
+    "nodemailer": "~0.6.1"
   },
   "devDependencies": {
     "supertest": "latest",

@@ -6,11 +6,15 @@ var mongoose = require('mongoose'),
     randomstring = require('randomstring'),
     User = mongoose.model('User'),
     csv = require('csv'),
-    mcapi = require('mailchimp-api'),
+    nodemailer = require('nodemailer'),
     config = require('../../config/config');
 
 
-mc = new mcapi.Mailchimp(config.mailchimp.apikey);
+// create reusable transport method (opens pool of SMTP connections)
+var smtpTransport = nodemailer.createTransport('SMTP',{
+    service: config.nodemailer.service,
+    auth: config.nodemailer.auth
+});
 
 /**
  * Import CSV
@@ -57,7 +61,7 @@ exports.import = function(req, res) {
                 if (recordsIteratedThrough === numRecords) {
                     // Subscribe successful users asynchronously
                     // TODO: Handle errors in subscription
-                    subscribeUsersToList(successfulUsers, config.mailchimp.listId);
+                    sendAccountInformationEmail(successfulUsers);
 
                     if (failedUsers.length === 0) {
                         res.jsonp(201, { message: 'Successfully added ' + numRecords + ' users' });
@@ -75,27 +79,38 @@ exports.import = function(req, res) {
     });
 };
 
-var subscribeUsersToList = function(users, listId, callback) {
-
+var sendAccountInformationEmail = function(users, callback) {
     users.forEach(function(user) {
-        mc.lists.subscribe(
-            {
-                id: listId,
-                email:{
-                    email: user.email
-                },
-                merge_vars: {
-                    fname: user.firstName,
-                    lname: user.lastName,
-                    password: user.password
-                }
-            },
-            function(data) {
-                
-            },
-            function(error) {
-                if (error.error) {
-                }
+        // setup e-mail data with unicode symbols
+        var mailOptions = {
+            from: config.nodemailer.name + ' <' + config.nodemailer.auth.user + '>', // sender address
+            to: user.email, // list of receivers
+            subject: 'Account Information', // Subject line
+            text: 'Hey ' + user.firstName +
+                ' Welcome to the LectureImprov system. Your account information is as follows:\n\n' +
+                'Username: ' + user.email + '\n' +
+                'Temporary Password: ' + user.password, // plaintext body
+            html:
+                    '<div>' +
+                        '<p>Hey ' + user.firstName + '!</p>' +
+                        '<p>Welcome to the LectureImprov system. Your account information is as follows:</p>' +
+                    '</div>' +
+                    '<div>' +
+                        '<p><b>Username</b>: ' + user.email + '</p>' +
+                        '<p><b>Temporary Password</b>: ' + user.password + '</p>' +
+                    '</div>'
+        };
+
+        // send mail with defined transport object
+        smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                console.log(error);
+            }else{
+                console.log('Message sent: ' + response.message);
+            }
+
+            // if you don't want to use this transport object anymore, uncomment following line
+            //smtpTransport.close(); // shut down the connection pool, no more messages
         });
     });
 };
