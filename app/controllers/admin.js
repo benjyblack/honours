@@ -60,7 +60,6 @@ exports.import = function(req, res) {
                 recordsIteratedThrough++;
                 if (recordsIteratedThrough === numRecords) {
                     // Subscribe successful users asynchronously
-                    // TODO: Handle errors in subscription
                     sendAccountInformationEmail(successfulUsers);
 
                     if (failedUsers.length === 0) {
