@@ -1,29 +1,47 @@
 <section data-ng-init="findOne();">
-    <h2>{{question.content}}</h2>
-    <p ng-hide="question.isAnonymous">Asked by: {{question.user.firstName}} {{global.user.lastName}}</p>
-    <div data-ng-show="global.user.type == 'Student'">
-    	<a class="btn" href="/#!/questions/{{question._id}}/answer">Answer</a>
-        <a class="btn" ng-click="nominate()" ng-class="{active: nominatedButtonActive}">+1</a>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{question.content}}</h1>
+            <p ng-hide="question.isAnonymous">Asked by: {{question.user.firstName}} {{global.user.lastName}}</p>
+        </div>
+        <!-- /.col-lg-12 -->
     </div>
-    <div data-ng-show="global.user.type === 'Professor'">
-    	<a class="btn" href="/#!/questions/{{question._id}}/edit">Edit</a>
-        <a class="btn" href="/#!" data-ng-click="delete()">Delete</a>
-    </div>
-    <div data-ng-show="question.possibleAnswers.length > 0">
-        <h3>Possible Answers</h3>
-        <ul ng-repeat="possibleAnswer in question.possibleAnswers">
-            <li class="possibleAnswer">{{possibleAnswer}}</li>
-        </ul>
-    </div>
-    <div data-ng-show="global.user.type === 'Professor' && question.type !== 'text'">
-        <h3>Correct Answer</h3>
-        <span>{{question.possibleAnswers[question.correctAnswerIndex]}}</span>
-    </div>
-    <h3>Answers</h3>
-    <div data-ng-show="visualization.type === 'chart'">
-        <div google-chart chart="visualization.content" style="{{visualization.content.cssStyle}}"></div>
-    </div>
-    <div data-ng-show="visualization.type === 'cloud'">
-        <div id="cloud"></div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div data-ng-show="global.user.type == 'Student'">
+                <a class="btn btn-primary" href="/#!/questions/{{question._id}}/answer">Answer</a>
+                <a class="btn btn-primary" ng-click="nominate()" ng-class="{active: nominatedButtonActive}">+1</a>
+            </div>
+            <div data-ng-show="global.user.type === 'Professor'">
+                <a class="btn btn-primary" href="/#!/questions/{{question._id}}/edit">Edit</a>
+                <a class="btn btn-primary" href="/#!" data-ng-click="delete()">Delete</a>
+            </div>
+            <br>
+            <div class="panel panel-default" ng-show="question.possibleAnswers.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-ellipsis-v fa-fw"></i> Possible Answers
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item" ng-repeat="possibleAnswer in question.possibleAnswers">
+                            <i class="fa fa-circle fa-fw"></i> {{possibleAnswer}}
+                            </span>
+                        </a>
+                    </div>
+                    <!-- /.list-group -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+            <h3>Answers</h3>
+            <div data-ng-show="visualization.type === 'chart'">
+                <div google-chart chart="visualization.content" style="{{visualization.content.cssStyle}}"></div>
+            </div>
+            <div data-ng-show="visualization.type === 'cloud'">
+                <div id="cloud"></div>
+            </div>
+        </div>
     </div>
 </section>

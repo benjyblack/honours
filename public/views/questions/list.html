@@ -1,8 +1,13 @@
 <section data-ng-init="find()">
-	<ul class="questions unstyled">
-		<li data-ng-repeat="question in questions | matchType:type | orderBy: '-nominatedBy.length'">
-			<h2><a data-ng-href="#!/questions/{{question._id}}">{{question.content}}</a> <span data-ng-show="type==='student'">Popularity: {{question.nominatedBy.length}}</span></h2>
-		</li>
-	</ul>
-	<h1 data-ng-hide="questions.length">No questions yet. <br> Why don't you <a href="/#!/questions/create">Create One</a>?</h1>
+	<div class="col-lg-8">
+        <div class="list-group">
+            <a data-ng-repeat="question in questions | matchType:type | orderBy: '-nominatedBy.length'" data-ng-href="#!/questions/{{question._id}}" class="list-group-item">
+                <i class="fa fa-question"></i> {{question.content}}
+                <span class="pull-right text-muted small">
+                	<i class="fa fa-star"></i><em>{{question.nominatedBy.length}}</em>
+                </span>
+            </a>
+        </div>
+        <!-- /.list-group -->
+    </div>
 </section>

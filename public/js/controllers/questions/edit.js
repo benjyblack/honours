@@ -47,6 +47,25 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
         });
     };
 
+    $scope.canSubmit = function() {
+        var question = $scope.question;
+
+        if (typeof(question.content) === 'undefined' || question.content.length === 0) return false;
+
+        if (question.type === 'multiplechoice')
+        {
+            // check all answers, if any are empty, we can't submit
+            var isEmpty = false;
+            question.possibleAnswers.forEach(function(answer) {
+                if (typeof(answer) === 'undefined' || answer.length === 0) isEmpty = true;
+            });
+
+            if (isEmpty === true) return false;
+        }
+
+        return true;
+    };
+
     if ($scope.action === 'create') {
         $scope.$watch('question.type', function(value) {
             if (value === 'text') {

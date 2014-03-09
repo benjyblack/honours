@@ -1,65 +1,79 @@
 <section>
-    <h2>Ask a question </h2>
-    <form class="form-horizontal" data-ng-submit="submit()">
-        <div class="control-group">
-            <label class="control-label" for="content">Question</label>
-            <div class="controls">
-                <input type="text" data-ng-model="question.content" id="content" placeholder="Enter question here..." >
-            </div>
-        </div>
-        <div class="control-group" ng-class="(action=='edit') ? 'disabled' : ''">
-            <label class="control-label" for="text">Type</label>
-            <div class="controls">
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn">
-                        <input type="radio" name="options" data-ng-model="question.type" value="text" id="text"> Text
-                    </label>
-                    <label class="btn">
-                        <input type="radio" name="options" data-ng-model="question.type" value="truefalse" id="truefalse"> True/False
-                    </label>
-                    <label class="btn">
-                        <input type="radio" name="options" data-ng-model="question.type" value="multiplechoice" id="multiplechoice"> Multiple Choice
-                    </label>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Ask a question
                 </div>
-            </div>
-        </div>
-        <div class="control-group" ng-switch on="question.type">
-            <div ng-switch-when="truefalse">
-                <label class="control-label" for="correctanswer-truefalse">Correct Answer</label>
-                <div class="controls">
-                    <div class="btn-group" data-toggle="buttons">
-                        <label ng-repeat="answer in $parent.question.possibleAnswers track by $index" class="btn">
-                            <input type="radio" name="options-truefalse" data-ng-model="$parent.$parent.question.correctAnswerIndex" value="{{$index}}"> {{answer}}
-                        </label>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form role="form" data-ng-submit="submit()">
+                                <div class="form-group">
+                                    <label>Question Text</label>
+                                    <input class="form-control" placeholder="Enter question here..." data-ng-model="question.content" >
+                                    <p class="help-block">Example: What is your name?</p>
+                                </div>
+                                <div class="form-group" ng-class="(action=='edit') ? 'disabled' : ''">
+                                    <label>Type</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="options" data-ng-model="question.type" id="options1" value="text" checked>Text
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="options" data-ng-model="question.type" id="options2" value="truefalse">True/False
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="options" data-ng-model="question.type" id="options3" value="multiplechoice">Multiple Choice
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-switch on="question.type">
+                                    <div ng-switch-when="truefalse">
+                                        <label>Correct Answer</label>
+                                        <div class="radio" ng-repeat="answer in $parent.question.possibleAnswers track by $index">
+                                            <label>
+                                                <input type="radio" name="options-truefalse" data-ng-model="$parent.$parent.question.correctAnswerIndex" value="{{$index}}"> {{answer}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div ng-switch-when="multiplechoice">
+                                        <label>Possible Answers</label>
+                                        [ <a href="" ng-click="addPossibleAnswer()">add</a> ]
+                                        <div ng-repeat="answer in $parent.question.possibleAnswers track by $index">
+                                            <input type="text" data-ng-model="$parent.question.possibleAnswers[$index]" required>
+                                            <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.question.correctAnswerIndex" value="{{$index}}">
+                                            <span ng-show='$parent.question.possibleAnswers.length > 1' >
+                                                [ <a href="" ng-click="removePossibleAnswer($index)">X</a> ]
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-switch-default>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="global.user.type === 'Student'">
+                                    <label>Ask anonymously?</label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" ng-model="question.isAnonymous">
+                                    </label>
+                                </div>
+                                
+                                <input type="submit" class="btn btn-default" ng-class="(canSubmit()) ? '' : 'disabled'"></input>
+                            </form>
+                        </div>
                     </div>
+                    <!-- /.row (nested) -->
                 </div>
+                <!-- /.panel-body -->
             </div>
-            <div ng-switch-when="multiplechoice">
-                <label class="control-label" for="correctanswer-multiplechoice">Possible Answers</label>
-                <div class="controls">
-                    [ <a href="" ng-click="addPossibleAnswer()">add</a> ]
-                    <div ng-repeat="answer in $parent.question.possibleAnswers track by $index">
-                        <input type="text" data-ng-model="$parent.question.possibleAnswers[$index]" required>
-                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.question.correctAnswerIndex" value="{{$index}}">
-                        <span ng-show='$parent.question.possibleAnswers.length > 1' >
-                            [ <a href="" ng-click="removePossibleAnswer($index)">X</a> ]
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div ng-switch-default>
-            </div>
+            <!-- /.panel -->
         </div>
-        <div class="control-group" ng-show="global.user.type === 'Student'">
-            <label for="anonymous-checkbox" class="control-label">Ask anonymously?</label>
-            <div class="controls">
-                <input type="checkbox" id="anonymous-checkbox" ng-model="question.isAnonymous">
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <input type="submit" class="btn">
-            </div>
-        </div>
-    </form>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
 </section>
