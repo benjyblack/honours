@@ -35,13 +35,22 @@
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->
-            <h3>Answers</h3>
-            <div data-ng-show="visualization.type === 'chart'">
-                <div google-chart chart="visualization.content" style="{{visualization.content.cssStyle}}"></div>
+            <div class="panel panel-default" ng-show="question.answers.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-ellipsis-v fa-fw"></i> Answers
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div data-ng-show="visualization.type === 'chart'">
+                        <div google-chart chart="visualization.content" style="{{visualization.content.cssStyle}}"></div>
+                    </div>
+                    <div data-ng-show="visualization.type === 'cloud'">
+                        <div id="cloud"></div>
+                    </div>
+                </div>
+                <!-- /.panel-body -->
             </div>
-            <div data-ng-show="visualization.type === 'cloud'">
-                <div id="cloud"></div>
-            </div>
+            <!-- /.panel -->
         </div>
     </div>
 </section>
