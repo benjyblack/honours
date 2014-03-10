@@ -1,0 +1,40 @@
+<section>
+	<div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-user fa-fw"></i> User Profile
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="inputFirstName" class="col-sm-2 control-label">First Name</label>
+                        <div class="col-sm-10">
+                          <input disabled type="text" class="form-control" id="inputFirstName" ng-model="global.user.firstName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLastName" class="col-sm-2 control-label">Last Name</label>
+                        <div class="col-sm-10">
+                          <input disabled type="text" class="form-control" id="inputLastName" ng-model="global.user.lastName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                          <input disabled type="text" class="form-control" id="inputEmail" ng-model="global.user.email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                        <div class="col-sm-4">
+                          <a class="btn btn-primary form-control" id="inputPassword" href="#!/user/changePassword">Change Password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</section>
