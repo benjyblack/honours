@@ -6,6 +6,10 @@ angular.module('mean').config(['$routeProvider',
             templateUrl: 'views/user/profile.html',
             controller: 'UserProfileController'
         }).
+        when('/user/password', {
+            templateUrl: 'views/user/password.html',
+            controller: 'UserPasswordController'
+        }).
         when('/questions/list/:type', {
             templateUrl: 'views/questions/list.html',
             controller: 'QuestionsListController'
