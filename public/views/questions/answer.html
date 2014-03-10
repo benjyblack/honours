@@ -1,45 +1,40 @@
 <section>
-	<form class="form-horizontal" data-ng-submit="submitAnswer()">
-		<div class="control-group">
-			<label class="control-label" for="content">Question</label>
-			<div class="controls">
-				<label id="content">{{question.content}}</label>
-			</div>
-		</div>
-		<div class="control-group" ng-switch on="question.type">
-			<div ng-switch-when="text">
-				<label class="control-label" for="answer-text">Answer</label>
-				<div class="controls">
-					<textarea data-ng-model="$parent.answer" id="answer-text" cols="30" rows="10" placeholder="Answer">
-					</textarea>
+	<div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{question.content}}</h1>
+        
+			<form role="form" data-ng-submit="submitAnswer()">
+				<div class="form-group" ng-switch on="question.type">
+					<div ng-switch-when="text">
+						<textarea data-ng-model="$parent.answer" id="answer-text" cols="50" rows="2" placeholder="Write answer here...">
+						</textarea>
+					</div>
+					<div ng-switch-when="truefalse">
+	                    <div class="radio">
+	                    	<label>
+	                        	<input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="true"> True
+	                    	</label>
+	                    </div>
+	                    <div class="radio">
+	                    	<label>
+	                        	<input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="false"> False
+	                    	</label>
+	                    </div>
+		        	</div>
+		        	<div ng-switch-when="multiplechoice">
+	                    <div class="radio" ng-repeat="possibleAnswer in $parent.question.possibleAnswers track by $index">
+	                        <label>
+	                        	<input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.answer" value="{{possibleAnswer}}"> {{possibleAnswer}}
+                        	</label>
+	                    </div>
+		            </div>
 				</div>
-			</div>
-			<div ng-switch-when="truefalse">
-	            <label class="control-label" for="answer-truefalse">Answer</label>
-	            <div class="controls">
-	                <div class="btn-group" id="answer-truefalse" data-toggle="buttons">
-	                    <label class="btn">
-	                        <input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="true" id="answer-true"> True
-	                    </label>
-	                    <label class="btn">
-	                        <input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="false" id="answer-false"> False
-	                    </label>
-	                </div>
-	            </div>
-        	</div>
-        	<div ng-switch-when="multiplechoice">
-                <label class="control-label" for="answer-multiplechoice">Possible Answers</label>
-                <div class="controls">
-                    <div ng-repeat="possibleAnswer in $parent.question.possibleAnswers track by $index">
-                        <input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.answer" value="{{possibleAnswer}}"> {{possibleAnswer}}
-                    </div>
-                </div>
-            </div>
+				<div class="control-group">
+					<div class="controls">
+						<input type="submit" class="btn" ng-disabled="!answer">
+					</div>
+				</div>
+			</form>
 		</div>
-		<div class="control-group">
-			<div class="controls">
-				<input type="submit" class="btn" ng-disabled="!answer">
-			</div>
-		</div>
-	</form>
+	</div>
 </section>
