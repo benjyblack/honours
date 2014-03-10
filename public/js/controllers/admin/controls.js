@@ -5,7 +5,8 @@ angular.module('mean.admin').controller('AdminControlsController', ['$scope', '$
     {
         $scope.menu = [{
             'title': 'Import Students from CSV',
-            'link': 'admin/import'
+            'link': 'admin/import',
+            'icon': 'fa-upload'
         }];
     }
 }]);
