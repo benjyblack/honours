@@ -2,13 +2,13 @@
 	<div class="col-lg-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-gear fa-fw"></i> {{header}}
+                <i class="fa fa-question fa-fw"></i> {{header}}
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="list-group">
                     <a data-ng-repeat="question in questions | matchType:type | orderBy: '-nominatedBy.length'" data-ng-href="#!/questions/{{question._id}}" class="list-group-item">
-                        <i class="fa fa-question"></i> {{question.content}}
+                        {{question.content}}
                         <span class="pull-right text-muted small">
                             <i class="fa fa-star"></i><em>{{question.nominatedBy.length}}</em>
                         </span>
