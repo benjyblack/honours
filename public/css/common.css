@@ -24,7 +24,7 @@
     #page-wrapper {
         position: inherit;
         margin: 0 0 0 250px;
-        padding: 0 30px;
+        padding: 20px 30px;
         min-height: 1300px;
         border-left: 1px solid #e7e7e7;
     }
@@ -216,6 +216,10 @@
 .chat-panel .panel-body {
     height: 350px;
     overflow-y: scroll;
+}
+
+.help-block {
+    font-style: italic;
 }
 
 /* Login Page */
