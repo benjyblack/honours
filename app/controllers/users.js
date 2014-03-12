@@ -2,7 +2,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    _ = require('lodash');
 
 /**
  * Auth callback
@@ -81,6 +82,19 @@ exports.create = function(req, res) {
     });
 };
 
+/**
+ * Update user
+ */
+exports.update = function(req, res) {
+    var user = req.user;
+
+    user = _.extend(user, req.body);
+
+    user.save(function(err) {
+        return res.jsonp(user);
+    });
+};
+
 /** TODO: Remove this
  * Create Professor
  */
@@ -124,6 +138,13 @@ exports.createProfessor = function(req, res) {
  */
 exports.me = function(req, res) {
     res.jsonp(req.user || null);
+};
+
+/**
+ * Show a user
+ */
+exports.show = function(req, res) {
+    res.jsonp(req.user);
 };
 
 /**

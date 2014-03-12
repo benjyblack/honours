@@ -6,17 +6,19 @@ module.exports = function(app, passport, auth) {
     app.get('/signout', users.signout);
     app.get('/users/me', users.me);
 
-    //Setting up the users api
-    app.post('/users', users.create);
-
-    // TODO: remove this
-    app.get('/createProfessor', users.createProfessor);
-
     //Setting the local strategy route
     app.post('/users/session', passport.authenticate('local', {
         failureRedirect: '/signin',
         failureFlash: true
     }), users.session);
+
+    //Setting up the users api
+    app.post('/users', users.create);
+    app.get('/users/:userId', users.show);
+    app.post('/users/:userId', users.update);
+
+    // TODO: remove this
+    app.get('/createProfessor', users.createProfessor);
 
     //Finish with setting up the userId param
     app.param('userId', users.user);

@@ -1,13 +1,20 @@
-angular.module('mean.user').controller('UserPasswordController', ['$scope', '$routeParams', '$location', 'Global', function ($scope, $routeParams, $location, Global) {
+angular.module('mean.user').controller('UserPasswordController', ['$scope', '$routeParams', '$location', 'Global', 'Users', function ($scope, $routeParams, $location, Global, Users) {
 	$scope.global = Global;
 
 	$scope.currentPassword = '';
 	$scope.newPassword = '';
 	$scope.retypeNewPassword = '';
 
+	$scope.findOne = function() {
+        Users.get({
+            userId: $scope.global.user._id
+        }, function(user) {
+            $scope.user = user;
+        });
+    }; 
+
 	$scope.canSubmit = function() {
 		
-		if ($scope.currentPassword.length === 0) return false;
 		if ($scope.newPassword.length === 0) return false;
 		if ($scope.retypeNewPassword.length === 0) return false;
 
@@ -19,5 +26,14 @@ angular.module('mean.user').controller('UserPasswordController', ['$scope', '$ro
 		if (!pattern.test($scope.newPassword)) return false;
 
 		return true;
+	};
+
+	$scope.submit = function() {
+
+		$scope.user.password = $scope.newPassword;
+
+		$scope.user.$save(function(response) {
+            $location.path('user/profile');
+        });
 	};
 }]);
