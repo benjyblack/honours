@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Generic require login routing middleware
  */
@@ -13,7 +15,7 @@ exports.requiresLogin = function(req, res, next) {
  */
 exports.user = {
     hasAuthorization: function(req, res, next) {
-        if (req.profile.id != req.user.id) {
+        if (req.profile.id !== req.user.id) {
             return res.send(401, 'User is not authorized');
         }
         next();

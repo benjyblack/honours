@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Module dependencies.
  */
@@ -8,7 +10,7 @@ var mongoose = require('mongoose'),
 /**
  * Auth callback
  */
-exports.authCallback = function(req, res, next) {    
+exports.authCallback = function(req, res, next) {
     res.redirect('/');
 };
 
@@ -66,7 +68,7 @@ exports.create = function(req, res) {
                 case 11001:
                     message = 'Email already exists';
                     break;
-                default: 
+                default:
                     message = 'Please fill all the required fields';
             }
 

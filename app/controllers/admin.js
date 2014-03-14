@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Module dependencies.
  */
@@ -78,7 +80,7 @@ exports.import = function(req, res) {
     });
 };
 
-var sendAccountInformationEmail = function(users, callback) {
+var sendAccountInformationEmail = function(users) {
     users.forEach(function(user) {
         // setup e-mail data with unicode symbols
         var mailOptions = {

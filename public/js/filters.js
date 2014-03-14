@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('mean.questions').filter('matchType', function() {
 	return function(questions, type) {
 		var filtered = [];

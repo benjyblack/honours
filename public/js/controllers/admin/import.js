@@ -1,23 +1,28 @@
-angular.module('mean.admin').controller('AdminImportController', ['$scope', '$routeParams', 'Global', '$location', '$fileUploader', function ($scope, $routeParams, Global, $location, $fileUploader) {
+'use strict';
 
-    $scope.message = "";
+angular.module('mean.admin').controller('AdminImportController',
+    ['$scope', '$routeParams', 'Global', '$location', '$fileUploader',
+    function ($scope, $routeParams, Global, $location, $fileUploader) {
 
-    // create a uploader with options
-    var uploader = $scope.uploader = $fileUploader.create({
-        scope: $scope,
-        url: 'admin/import'
-    });
+        $scope.message = '';
 
-    // REGISTER HANDLERS
+        // create a uploader with options
+        var uploader = $scope.uploader = $fileUploader.create({
+            scope: $scope,
+            url: 'admin/import'
+        });
 
-    uploader.bind('afteraddingfile', function (event, item) {
-        item.upload();
-    });
+        // REGISTER HANDLERS
 
-    uploader.bind('complete', function (event, xhr, item, response) {
-        console.info('Complete', xhr, item, response);
+        uploader.bind('afteraddingfile', function (event, item) {
+            item.upload();
+        });
 
-        if (xhr.status === 201) $scope.message = response.message;
-        else $scope.message = response.message;
-    });
-}]);
+        uploader.bind('complete', function (event, xhr, item, response) {
+            console.info('Complete', xhr, item, response);
+
+            if (xhr.status === 201) $scope.message = response.message;
+            else $scope.message = response.message;
+        });
+    }
+]);

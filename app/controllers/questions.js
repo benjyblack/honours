@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Module dependencies.
  */
@@ -54,15 +56,16 @@ exports.update = function(req, res) {
         if ( question.nominatedBy.indexOf(req.user._id) === -1 )
             question.nominatedBy.push(req.user);
     }
-    // If question not nominated by this user, then check to see if they had previously nominated it, if they had, remove it
+    // If question not nominated by this user, 
+    // then check to see if they had previously nominated it, if they had, remove it
     else
     {
         var index = question.nominatedBy.indexOf(req.user._id);
-        if ( index != -1 )
+        if ( index !== -1 )
             question.nominatedBy.splice(index, 1);
     }
 
-    question.save(function(err) {
+    question.save(function() {
         res.jsonp(question);
     });
 };
@@ -95,13 +98,16 @@ exports.show = function(req, res) {
  * List of Questions
  */
 exports.all = function(req, res) {
-    Question.find().sort('-created').populate('user', 'firstName lastName email type nominatedBy').exec(function(err, questions) {
-        if (err) {
-            res.render('error', {
-                status: 500
-            });
-        } else {
-            res.jsonp(questions);
-        }
-    });
+    Question
+        .find()
+        .sort('-created')
+        .populate('user', 'firstName lastName email type nominatedBy').exec(function(err, questions) {
+            if (err) {
+                res.render('error', {
+                    status: 500
+                });
+            } else {
+                res.jsonp(questions);
+            }
+        });
 };

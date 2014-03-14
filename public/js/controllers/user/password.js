@@ -1,39 +1,44 @@
-angular.module('mean.user').controller('UserPasswordController', ['$scope', '$routeParams', '$location', 'Global', 'Users', function ($scope, $routeParams, $location, Global, Users) {
-	$scope.global = Global;
+'use strict';
 
-	$scope.currentPassword = '';
-	$scope.newPassword = '';
-	$scope.retypeNewPassword = '';
+angular.module('mean.user').controller('UserPasswordController',
+	['$scope', '$routeParams', '$location', 'Global', 'Users',
+	function ($scope, $routeParams, $location, Global, Users) {
+		$scope.global = Global;
 
-	$scope.findOne = function() {
-        Users.get({
-            userId: $scope.global.user._id
-        }, function(user) {
-            $scope.user = user;
-        });
-    }; 
+		$scope.currentPassword = '';
+		$scope.newPassword = '';
+		$scope.retypeNewPassword = '';
 
-	$scope.canSubmit = function() {
-		
-		if ($scope.newPassword.length === 0) return false;
-		if ($scope.retypeNewPassword.length === 0) return false;
+		$scope.findOne = function() {
+			Users.get({
+				userId: $scope.global.user._id
+			}, function(user) {
+				$scope.user = user;
+			});
+		};
 
-		// New password must match
-		if ($scope.newPassword !== $scope.retypeNewPassword) return false;
+		$scope.canSubmit = function() {
+			
+			if ($scope.newPassword.length === 0) return false;
+			if ($scope.retypeNewPassword.length === 0) return false;
 
-		// New password must follow password rules
-		var pattern = new RegExp('^([a-zA-Z0-9@*#!$]{8,15})$');
-		if (!pattern.test($scope.newPassword)) return false;
+			// New password must match
+			if ($scope.newPassword !== $scope.retypeNewPassword) return false;
 
-		return true;
-	};
+			// New password must follow password rules
+			var pattern = new RegExp('^([a-zA-Z0-9@*#!$]{8,15})$');
+			if (!pattern.test($scope.newPassword)) return false;
 
-	$scope.submit = function() {
+			return true;
+		};
 
-		$scope.user.password = $scope.newPassword;
+		$scope.submit = function() {
 
-		$scope.user.$save(function(response) {
-            $location.path('user/profile');
-        });
-	};
-}]);
+			$scope.user.password = $scope.newPassword;
+
+			$scope.user.$save(function() {
+				$location.path('user/profile');
+			});
+		};
+	}
+]);

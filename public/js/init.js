@@ -1,7 +1,9 @@
-angular.element(document).ready(function() {
-    //Fixing facebook bug with redirect
-    if (window.location.hash == "#_=_") window.location.hash = "#!";
+'use strict';
 
-    //Then init the app
-    angular.bootstrap(document, ['mean']);
+angular.element(document).ready(function() {
+	//Fixing facebook bug with redirect
+	if (window.location.hash == '#_=_') window.location.hash = '#!';
+
+	//Then init the app
+	angular.bootstrap(document, ['mean']);
 });

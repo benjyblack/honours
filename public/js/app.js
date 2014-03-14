@@ -1,4 +1,12 @@
-angular.module('mean', ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.route', 'mean.system', 'mean.admin', 'mean.user', 'mean.questions']);
+'use strict';
+
+angular.module('mean',
+	[
+		'ngCookies', 'ngResource', 'ngRoute',
+		'ui.bootstrap', 'ui.route', 'mean.system', 'mean.admin',
+		'mean.user', 'mean.questions'
+	]
+);
 
 angular.module('mean.system', []);
 angular.module('mean.admin', ['angularFileUpload']);

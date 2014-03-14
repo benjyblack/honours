@@ -1,33 +1,38 @@
-angular.module('mean.questions').controller('QuestionsDetailController', ['$scope', '$routeParams', '$location', 'Global', 'Questions', 'Visualizations', function ($scope, $routeParams, $location, Global, Questions, Visualizations) {
-    $scope.global = Global;
+'use strict';
 
-    $scope.findOne = function() {
-        Questions.get({
-            questionId: $routeParams.questionId
-        }, function(question) {
-            $scope.question = question;
+angular.module('mean.questions').controller('QuestionsDetailController',
+    ['$scope', '$routeParams', '$location', 'Global', 'Questions', 'Visualizations',
+    function ($scope, $routeParams, $location, Global, Questions, Visualizations) {
+        $scope.global = Global;
 
-            $scope.nominatedButtonActive = $scope.question.nominatedBy.indexOf($scope.global.user._id) != -1;
+        $scope.findOne = function() {
+            Questions.get({
+                questionId: $routeParams.questionId
+            }, function(question) {
+                $scope.question = question;
 
-            $scope.visualization =  Visualizations.createVisualization(question);
-        });
-    };
+                $scope.nominatedButtonActive = $scope.question.nominatedBy.indexOf($scope.global.user._id) !== -1;
 
-    $scope.nominate = function() {
-        var question = $scope.question;
+                $scope.visualization =  Visualizations.createVisualization(question);
+            });
+        };
 
-        $scope.nominatedButtonActive = !$scope.nominatedButtonActive;
+        $scope.nominate = function() {
+            var question = $scope.question;
 
-        question.isNominated = $scope.nominatedButtonActive;
+            $scope.nominatedButtonActive = !$scope.nominatedButtonActive;
 
-        question.$update();
-    };
+            question.isNominated = $scope.nominatedButtonActive;
 
-    $scope.delete = function() {
-        var question = $scope.question;
+            question.$update();
+        };
 
-        question.$delete(function() {
-            $location.path('questions');
-        });
-    };
-}]);
+        $scope.delete = function() {
+            var question = $scope.question;
+
+            question.$delete(function() {
+                $location.path('questions');
+            });
+        };
+    }
+]);

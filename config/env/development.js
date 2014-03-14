@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = {
-    db: "mongodb://localhost/mean-dev",
+    db: 'mongodb://localhost/mean-dev',
     app: {
-        name: "LectureImprov - Development"
+        name: 'LectureImprov - Development'
     }
-}
+};
