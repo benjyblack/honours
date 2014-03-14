@@ -6,25 +6,25 @@
 			<form role="form" data-ng-submit="submitAnswer()">
 				<div class="form-group" ng-switch on="question.type">
 					<div ng-switch-when="text">
-						<textarea data-ng-model="$parent.answer" id="answer-text" cols="50" rows="2" placeholder="Write answer here...">
+						<textarea data-ng-model="$parent.answer.content" id="answer-text" cols="50" rows="2" placeholder="Write answer here...">
 						</textarea>
 					</div>
 					<div ng-switch-when="truefalse">
 	                    <div class="radio">
 	                    	<label>
-	                        	<input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="true"> True
+	                        	<input type="radio" name="options-truefalse" data-ng-model="$parent.answer.content" value="true"> True
 	                    	</label>
 	                    </div>
 	                    <div class="radio">
 	                    	<label>
-	                        	<input type="radio" name="options-truefalse" data-ng-model="$parent.answer" value="false"> False
+	                        	<input type="radio" name="options-truefalse" data-ng-model="$parent.answer.content" value="false"> False
 	                    	</label>
 	                    </div>
 		        	</div>
 		        	<div ng-switch-when="multiplechoice">
 	                    <div class="radio" ng-repeat="possibleAnswer in $parent.question.possibleAnswers track by $index">
 	                        <label>
-	                        	<input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.answer" value="{{possibleAnswer}}"> {{possibleAnswer}}
+	                        	<input type="radio" name="options-multiplechoice" data-ng-model="$parent.$parent.answer.content" value="{{possibleAnswer}}"> {{possibleAnswer}}
                         	</label>
 	                    </div>
 		            </div>

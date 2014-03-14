@@ -6,6 +6,14 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
 
     $scope.promise.then(function (question){
         $scope.question = question;
+
+        if (typeof($scope.question.answers) !== "undefined")
+        {
+            $scope.question.answers.forEach(function(answer) {
+                if (answer.user._id === $scope.global.user._id)
+                    $scope.answer = answer;
+            });
+        }
     });
 
     $scope.submit = function() {
@@ -34,8 +42,12 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
     $scope.submitAnswer = function() {
         var question = $scope.question;
 
-        // Add answer
-        question.answers.push({ content: $scope.answer, isNew: true });
+        // Add answer if it didn't already exist as part of the question
+        if (typeof($scope.answer._id) === 'undefined')
+        {
+            $scope.answer.user = $scope.global.user;
+            question.answers.push($scope.answer);
+        }
 
         if (!question.updated) {
             question.updated = [];
