@@ -7,7 +7,7 @@ angular.module('mean.questions').controller('QuestionsEditController', ['$scope'
     $scope.promise.then(function (question){
         $scope.question = question;
 
-        if (typeof($scope.question.answers) !== "undefined")
+        if (typeof($scope.question.answers) !== 'undefined')
         {
             $scope.question.answers.forEach(function(answer) {
                 if (answer.user._id === $scope.global.user._id)

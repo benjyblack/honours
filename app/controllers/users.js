@@ -90,7 +90,7 @@ exports.update = function(req, res) {
 
     user = _.extend(user, req.body);
 
-    user.save(function(err) {
+    user.save(function() {
         return res.jsonp(user);
     });
 };
@@ -100,10 +100,10 @@ exports.update = function(req, res) {
  */
 exports.createProfessor = function(req, res) {
 
-    req.body.firstName = "Mr";
-    req.body.lastName = "Professor"
-    req.body.email = "professor@gmail.com";
-    req.body.password = "professor";
+    req.body.firstName = 'Mr';
+    req.body.lastName = 'Professor';
+    req.body.email = 'professor@gmail.com';
+    req.body.password = 'professor';
     req.body.type = 'Professor';
 
     var user = new User(req.body);

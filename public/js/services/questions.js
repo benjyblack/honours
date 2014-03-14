@@ -26,5 +26,5 @@ angular.module('mean.questions').factory("QuestionsInit", ['$routeParams', '$q',
 
             return deferred.promise;
         }
-    }
+    };
 }]);
