@@ -37,7 +37,7 @@ var QuestionSchema = new Schema({
         trim: true
     },
     type: String,
-    correctAnswerIndex: Schema.Types.Mixed,
+    correctAnswerIndex: Number,
     possibleAnswers: Schema.Types.Mixed,
     answers: [AnswerSchema],
     nominatedBy: [{
@@ -49,6 +49,13 @@ var QuestionSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     }
+});
+
+/**
+ * Virtuals
+ */
+QuestionSchema.virtual('creatorType').get(function(password) {
+    return this.user.type;
 });
 
 /**

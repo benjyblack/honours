@@ -5,24 +5,21 @@ angular.module('mean.questions').controller('QuestionsDetailController',
     function ($scope, $routeParams, $location, Global, Questions, Visualizations) {
         $scope.global = Global;
 
-        $scope.findOne = function() {
-            Questions.get({
-                questionId: $routeParams.questionId
-            }, function(question) {
-                $scope.question = question;
+        Questions.get($routeParams.questionId).then(function(question) {
+            $scope.question = question;
+            $scope.visualization =  Visualizations.createVisualization(question);
 
-                $scope.nominatedButtonActive = $scope.question.nominatedBy.indexOf($scope.global.user._id) !== -1;
+            $scope.askedByMe = $scope.question.user._id === $scope.global.user._id;
+            $scope.nominatedByMe = $scope.question.nominatedBy.indexOf($scope.global.user._id) !== -1;
 
-                $scope.visualization =  Visualizations.createVisualization(question);
-            });
-        };
+        });
 
         $scope.nominate = function() {
             var question = $scope.question;
 
-            $scope.nominatedButtonActive = !$scope.nominatedButtonActive;
+            $scope.nominatedByMe = !$scope.nominatedByMe;
 
-            question.isNominated = $scope.nominatedButtonActive;
+            question.isNominated = $scope.nominatedByMe;
 
             question.$update();
         };

@@ -36,7 +36,7 @@ exports.import = function(req, res) {
         }
         else {
             user = new User();
-            user.type = 'Student';
+            user.type = 'student';
             user.provider = 'local';
             user.password = randomstring.generate();
 

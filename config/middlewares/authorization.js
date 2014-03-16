@@ -29,7 +29,7 @@ exports.user = {
 exports.admin = {
     hasAuthorizationToImport: function(req, res, next) {
         // TODO: Add proper authentication for students
-        if (req.user.type !== 'Professor') {
+        if (req.user.type !== 'professor') {
             return res.send(401, 'User is not authorized');
         }
         next();
@@ -42,7 +42,7 @@ exports.admin = {
 exports.question = {
     hasAuthorizationToUpdateQuestions: function(req, res, next) {
         // TODO: Add proper authentication for students
-        if (req.user.type !== 'Professor' && 0) {
+        if (req.user.type !== 'professor' && 0) {
             return res.send(401, 'User is not authorized');
         }
         next();

@@ -55,7 +55,7 @@ exports.session = function(req, res) {
 exports.create = function(req, res) {
 
     // TODO: have a better way of doing this
-    req.body.type = 'Student';
+    req.body.type = 'student';
 
     var user = new User(req.body);
     var message = null;
@@ -106,7 +106,7 @@ exports.createProfessor = function(req, res) {
     req.body.lastName = 'Professor';
     req.body.email = 'professor@gmail.com';
     req.body.password = 'professor';
-    req.body.type = 'Professor';
+    req.body.type = 'professor';
 
     var user = new User(req.body);
     var message = null;
