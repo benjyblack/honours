@@ -1,20 +1,13 @@
 (function() {
     'use strict';
 
-    // Questions Controller Spec
+    // QuestionsListController Spec
     describe('QuestionsListController', function() {
         var scope,
-            $httpBackend,
-            $routeParams,
-            $location,
             $q,
+            MockQuestions,
             QuestionsListController;
 
-        // The $resource service augments the response object with methods for updating and deleting the resource.
-        // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
-        // the responses exactly. To solve the problem, we use a newly-defined toEqualData Jasmine matcher.
-        // When the toEqualData matcher compares two objects, it takes only object properties into
-        // account and ignores methods.
         beforeEach(function() {
             this.addMatchers({
                 toEqualData: function(expected) {
@@ -26,41 +19,72 @@
         // Load the controllers module
         beforeEach(module('mean'));
 
-        beforeEach(inject(function($controller, $rootScope, _$location_, _$routeParams_, _$httpBackend_, _$q_) {
+        beforeEach(inject(function($controller, $rootScope, _$q_) {
             scope = $rootScope.$new();
-
-            $routeParams = _$routeParams_;
-
-            $httpBackend = _$httpBackend_;
-
-            $location = _$location_;
-
             $q = _$q_;
 
+            var deferred = $q.defer();
+            deferred.resolve([
+                {
+                    content: 'This is a professor question',
+                    type: 'text',
+                    user: {
+                        type: 'professor'
+                    }
+                },
+                {
+                    content: 'This is a student question',
+                    type: 'text',
+                    user: {
+                        type: 'student'
+                    }
+                }
+            ]);
+
+            MockQuestions = {
+                getAll: jasmine.createSpy('mock: getAll()').andReturn(deferred.promise)
+            };
+
             QuestionsListController = $controller('QuestionsListController', {
-                $scope: scope
+                $scope: scope,
+                Questions: MockQuestions
             });
         }));
 
-        it('$scope.find() should create an array with at least one question object ' +
-            'fetched from XHR', function() {
+        it('should fetch array of student questions fetched from Questions service when type = student', function() {
 
-                // test expected GET request
-                $httpBackend.expectGET('questions').respond([{
-                    content: 'Why are you asking me this?',
-                    type: 'text'
-                }]);
+            // get only student questions
+            scope.type = 'student';
 
-                // run controller
-                scope.find();
-                $httpBackend.flush();
+            // resolve promise
+            scope.$apply();
 
-                // test scope value
-                expect(scope.questions).toEqualData([{
-                    content: 'Why are you asking me this?',
-                    type: 'text'
-                }]);
+            // test scope value
+            expect(scope.questions).toEqualData([{
+                content: 'This is a student question',
+                type: 'text',
+                user: {
+                    type: 'student'
+                }
+            }]);
+        });
 
+        it('should fetch array of professor questions fetched from Questions service when type = professor', function() {
+
+            // get only professor questions
+            scope.type = 'professor';
+
+            // resolve promise
+            scope.$apply();
+
+            // test scope value
+            expect(scope.questions).toEqualData([{
+                content: 'This is a professor question',
+                type: 'text',
+                user: {
+                    type: 'professor'
+                }
+            }]);
         });
     });
-});
+})();

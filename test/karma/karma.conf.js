@@ -17,6 +17,7 @@ module.exports = function(config) {
             'public/lib/angular/angular.js',
             'public/lib/angular-mocks/angular-mocks.js',
             'public/lib/angular-cookies/angular-cookies.js',
+            'public/lib/angular-file-upload/angular-file-upload.js',
             'public/lib/angular-resource/angular-resource.js',
             'public/lib/angular-route/angular-route.js',
             'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
@@ -81,7 +82,7 @@ module.exports = function(config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['PhantomJS'],
+        browsers: ['Chrome'],
 
 
         // If browser does not capture in given timeout [ms], kill it

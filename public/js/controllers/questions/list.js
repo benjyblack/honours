@@ -9,7 +9,6 @@ angular.module('mean.questions').controller('QuestionsListController',
 		$scope.header = $scope.type === 'professor' ? 'Professor\'s Questions' : 'Student\'s Questions';
 
 		Questions.getAll().then(function(questions){
-
 			$scope.questions = [];
 
 			questions.forEach(function(question) {

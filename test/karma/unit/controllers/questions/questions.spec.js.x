@@ -39,38 +39,6 @@
             $q = _$q_;
         }));
 
-        describe('QuestionsListController', function() {
-            var QuestionsListController;
-
-            beforeEach(inject(function($controller) {
-                // Initialize the controller
-                QuestionsListController = $controller('QuestionsListController', {
-                    $scope: scope
-                });
-            }));
-
-            it('$scope.find() should create an array with at least one question object ' +
-                'fetched from XHR', function() {
-
-                    // test expected GET request
-                    $httpBackend.expectGET('questions').respond([{
-                        title: 'A question about MEAN',
-                        content: 'MEAN rocks!'
-                    }]);
-
-                    // run controller
-                    scope.find();
-                    $httpBackend.flush();
-
-                    // test scope value
-                    expect(scope.questions).toEqualData([{
-                        title: 'A question about MEAN',
-                        content: 'MEAN rocks!'
-                    }]);
-
-                });
-        });
-
         describe('QuestionsDetailController', function() {
 
             // Initialize the controller
@@ -82,7 +50,9 @@
             beforeEach(inject(function($controller) {
 
                 mockVisualizations = {
-                    createVisualization: jasmine.createSpy('createTrueFalseChart')
+                    createVisualization: jasmine.createSpy('createTrueFalseChart').andCallFake(function() {
+                        
+                    })
                 };
 
                 QuestionsDetailController = $controller('QuestionsDetailController', {
