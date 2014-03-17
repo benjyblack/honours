@@ -25,12 +25,12 @@ angular.module('mean.questions').controller('QuestionsEditController',
 
 		$scope.submit = function() {
 			if ($scope.action === 'create') {
-				$scope.question.$save(function(response) {
+				Questions.save($scope.question, function(response) {
 					$location.path('questions/' + response._id);
 				});
 			}
 			else {
-				$scope.question.$update(function() {
+				Questions.update($scope.question, function() {
 					$location.path('questions/' + $scope.question._id);
 				});
 			}
@@ -61,7 +61,7 @@ angular.module('mean.questions').controller('QuestionsEditController',
 			}
 			question.updated.push(new Date().getTime());
 
-			question.$update(function() {
+			Questions.update(question, function() {
 				$location.path('questions/' + question._id);
 			});
 		};

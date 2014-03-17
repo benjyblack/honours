@@ -10,24 +10,28 @@ angular.module('mean.questions').controller('QuestionsDetailController',
             $scope.visualization =  Visualizations.createVisualization(question);
 
             $scope.askedByMe = $scope.question.user._id === $scope.global.user._id;
-            $scope.nominatedByMe = $scope.question.nominatedBy.indexOf($scope.global.user._id) !== -1;
-
         });
 
         $scope.nominate = function() {
-            var question = $scope.question;
+            if ($scope.isNominatedByMe()) {
+                var index = $scope.question.nominatedBy.indexOf($scope.global.user._id);
+                $scope.question.nominatedBy.splice(index, 1);
+            }
+            else {
+                $scope.question.nominatedBy.push($scope.global.user._id);
+            }
 
-            $scope.nominatedByMe = !$scope.nominatedByMe;
+            Questions.update($scope.question);
+        };
 
-            question.isNominated = $scope.nominatedByMe;
+        $scope.isNominatedByMe = function() {
+            if (typeof($scope.question) === 'undefined') return false;
 
-            question.$update();
+            return $scope.question.nominatedBy.indexOf($scope.global.user._id) !== -1;
         };
 
         $scope.delete = function() {
-            var question = $scope.question;
-
-            question.$delete(function() {
+            Questions.delete($scope.question, function() {
                 $location.path('questions');
             });
         };

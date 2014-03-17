@@ -47,24 +47,6 @@ exports.update = function(req, res) {
 
     question = _.extend(question, req.body);
 
-    // Populate the question with the nominatedBy field
-    question.populate('nominatedBy');
-
-    // If question has been nominated by the user, add the current user to the nominatedBy array
-    if ( req.question.isNominated )
-    {
-        if ( question.nominatedBy.indexOf(req.user._id) === -1 )
-            question.nominatedBy.push(req.user);
-    }
-    // If question not nominated by this user, 
-    // then check to see if they had previously nominated it, if they had, remove it
-    else
-    {
-        var index = question.nominatedBy.indexOf(req.user._id);
-        if ( index !== -1 )
-            question.nominatedBy.splice(index, 1);
-    }
-
     question.save(function() {
         res.jsonp(question);
     });

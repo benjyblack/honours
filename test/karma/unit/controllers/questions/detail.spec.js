@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    // Questions Controller Spec
+    // QuestionsDetailController
     describe('QuestionsDetailController', function() {
         var scope,
             $routeParams,
@@ -55,7 +55,9 @@
             };
 
             MockQuestions = {
-                get: jasmine.createSpy('mock: get()').andReturn(deferred.promise)
+                get: jasmine.createSpy('mock: get()').andReturn(deferred.promise),
+                update: jasmine.createSpy('mock: update()'),
+                delete: jasmine.createSpy('mock: delete()').andCallFake(function (question, callback) { callback() })
             };
             
             MockVisualizations = {
@@ -71,7 +73,7 @@
 
         }));
 
-        it('should return a single question object fetched from Questions service using a questionId URL parameter', function() {
+        it('should return a single question object fetched from Questions service', function() {
                 
                 // resolve promise
                 scope.$apply();
@@ -91,21 +93,53 @@
                 });
         });
 
-        it('$scope.delete() should send a DELETE request with a valid questionId' +
-            'and change the location the questions list', inject(function(Questions) {
+        it('$scope.isNominatedByMe() should return true if already nominated by User', function(){
+            scope.question = {
+                _id: '525a8422f6d0f87f0e407a33',
+                nominatedBy: ['a5wa6sad6ad878ds2wqw']
+            };
 
-                scope.question = new Questions({
+            expect(scope.isNominatedByMe()).toBe(true);
+        });
+
+        it('$scope.nominate() should add nomination if not nominated previously to Question and update', function(){
+            scope.question = {
+                _id: '525a8422f6d0f87f0e407a33',
+                nominatedBy: []
+            };
+
+            scope.nominate();
+
+            expect(scope.question.nominatedBy).toEqual(['a5wa6sad6ad878ds2wqw']);
+
+            expect(MockQuestions.update).toHaveBeenCalledWith(scope.question);
+        });
+
+        it('$scope.nominate() should remove nomination if nominated previously from Question and update', function(){
+            scope.question = {
+                _id: '525a8422f6d0f87f0e407a33',
+                nominatedBy: ['a5wa6sad6ad878ds2wqw']
+            };
+
+            scope.nominate();
+
+            expect(scope.question.nominatedBy).toEqual([]);
+
+            expect(MockQuestions.update).toHaveBeenCalledWith(scope.question);
+        });
+
+        it('$scope.delete() should send delete a question using the Questions service' +
+            'and change the location to the questions list', function() {
+
+                scope.question = {
                     _id: '525a8422f6d0f87f0e407a33'
-                });
+                };
 
-                $httpBackend.expectDELETE(/questions\/([0-9a-fA-F]{24})$/).respond(204);
-
-                // run controller
                 scope.delete();
-                $httpBackend.flush();
+                expect(MockQuestions.delete).toHaveBeenCalled();
 
                 //  test after successful delete URL location questions list
-                 expect($location.path()).toBe('/questions');
-            }));
+                expect($location.path()).toBe('/questions');
+            });
     });
 })();

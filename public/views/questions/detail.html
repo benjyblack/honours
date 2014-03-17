@@ -11,7 +11,7 @@
         <div class="col-lg-8">
             <div data-ng-show="!askedByMe">
                 <a class="btn btn-primary" href="/#!/questions/{{question._id}}/answer">Answer</a>
-                <a class="btn btn-primary" ng-click="nominate()" ng-class="{active: nominatedByMe}">+1</a>
+                <a class="btn btn-primary" ng-click="nominate()" ng-class="{active: isNominatedByMe()}">+1</a>
             </div>
             <div data-ng-show="askedByMe">
                 <a class="btn btn-primary" href="/#!/questions/{{question._id}}/edit">Edit</a>

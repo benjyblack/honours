@@ -40,6 +40,15 @@ angular.module('mean.questions').factory('Questions',
                 });
 
                 return deferred.promise;
+            },
+            update: function(question, callback) {
+                question.$update(callback);
+            },
+            save: function(question, callback) {
+                question.$save(callback);
+            },
+            delete: function(question, callback) {
+                question.$delete(callback);
             }
         };
     }
