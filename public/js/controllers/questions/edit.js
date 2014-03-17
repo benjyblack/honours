@@ -12,14 +12,6 @@ angular.module('mean.questions').controller('QuestionsEditController',
 		else {
 			Questions.get($routeParams.questionId).then(function (question){
 				$scope.question = question;
-
-				if (typeof($scope.question.answers) !== 'undefined')
-				{
-					$scope.question.answers.forEach(function(answer) {
-						if (answer.user._id === $scope.global.user._id)
-							$scope.answer = answer;
-					});
-				}
 			});
 		}
 
@@ -44,26 +36,6 @@ angular.module('mean.questions').controller('QuestionsEditController',
 			$scope.question.possibleAnswers.splice(index, 1);
 			if (index == $scope.question.correctAnswerIndex)
 				$scope.question.correctAnswerIndex = 0;
-		};
-
-		$scope.submitAnswer = function() {
-			var question = $scope.question;
-
-			// Add answer if it didn't already exist as part of the question
-			if (typeof($scope.answer._id) === 'undefined')
-			{
-				$scope.answer.user = $scope.global.user;
-				question.answers.push($scope.answer);
-			}
-
-			if (!question.updated) {
-				question.updated = [];
-			}
-			question.updated.push(new Date().getTime());
-
-			Questions.update(question, function() {
-				$location.path('questions/' + question._id);
-			});
 		};
 
 		$scope.canSubmit = function() {

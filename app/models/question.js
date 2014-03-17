@@ -20,6 +20,10 @@ var AnswerSchema = new Schema({
         default: '',
         trim: true
     },
+    question: {
+        type: Schema.ObjectId,
+        ref: 'Question'
+    },
     user: {
         type: Schema.ObjectId,
         ref: 'User'
@@ -39,7 +43,10 @@ var QuestionSchema = new Schema({
     type: String,
     correctAnswerIndex: Number,
     possibleAnswers: Schema.Types.Mixed,
-    answers: [AnswerSchema],
+    answers: [{
+        type: Schema.ObjectId,
+        ref: 'Answer'
+    }],
     nominatedBy: [{
         type: Schema.ObjectId,
         ref: 'User'
