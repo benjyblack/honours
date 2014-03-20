@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('mean.questions').controller('QuestionsAnswerController',
-	['$scope', '$routeParams', '$location', 'Global', 'Questions', 'Answers',
-	function ($scope, $routeParams, $location, Global, Questions, Answers) {
+	['$scope', '$routeParams', '$location', 'Global', 'Questions',
+	function ($scope, $routeParams, $location, Global, Questions) {
 		$scope.global = Global;
 
 		// initialize question and answer
@@ -10,17 +10,16 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 			.get($routeParams.questionId)
 			.then(function (question){
 				$scope.question = question;
-			});
 
-		Answers
-			.get({'user._id': $scope.global.user._id, 'question._id' : $routeParams.questionId})
-			.then(function(answer) {
-				$scope.answer = answer;
-			})
-			.catch(function() { // if can't find the answer on the server, create a new one
-				$scope.answer = Answers.create();
-				$scope.answer.user = $scope.global.user._id;
-				$scope.answer.question = $routeParams.questionId;
+				// Create a new answer for this question. This will be overriden below if one already exits
+				$scope.answer = Questions.Answers.create();
+				$scope.answer.user = $scope.global.user;
+
+				question.answers.forEach(function(answer) {
+					if (answer.user === $scope.global.user._id) {
+						$scope.answer = answer;
+					}
+				});
 			});
 
 		$scope.submit = function() {
@@ -31,8 +30,8 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 				});
 			}
 			else {
-				Answers.save($scope.answer, function(answer) {
-					$location.path('questions/' + answer.question._id);
+				Questions.Answers.save($scope.answer, function(question) {
+					$location.path('questions/' + question._id);
 				});
 			}
 		};

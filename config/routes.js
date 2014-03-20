@@ -31,14 +31,23 @@ module.exports = function(app, passport, auth) {
 
     //Questions Routes
     var questions = require('../app/controllers/questions');
+    app.param('questionId', questions.load);
     app.get('/questions', auth.requiresLogin, questions.all);
     app.post('/questions', auth.question.hasAuthorizationToUpdateQuestions, questions.create);
     app.get('/questions/:questionId', auth.requiresLogin, questions.show);
     app.put('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToUpdateQuestions, questions.update);
     app.del('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToUpdateQuestions, questions.destroy);
 
-    //Finish with setting up the questionId param
-    app.param('questionId', questions.question);
+
+    //Answers routes
+    var answers = require('../app/controllers/answers');
+    app.param('answerId', answers.load);
+    app.get('/questions/:questionId/answers', answers.all);
+    app.post('/questions/:questionId/answers', answers.create);
+    app.get('/questions/:questionId/answers/:answerId', answers.show);
+    app.put('/questions/:questionId/answers/:answerId', answers.update);
+    app.del('/questions/:questionId/answers/:answerId', answers.destroy);
+
 
     //Home route
     var index = require('../app/controllers/index');

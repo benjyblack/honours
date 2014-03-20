@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 /**
  * Find question by id
  */
-exports.question = function(req, res, next, id) {
+exports.load = function(req, res, next, id) {
     Question.load(id, function(err, question) {
         if (err) return next(err);
         if (!question) return next(new Error('Failed to load question ' + id));

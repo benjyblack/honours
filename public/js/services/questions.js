@@ -14,28 +14,45 @@ angular.module('mean.questions').factory('QuestionsResource',
     }
 ]);
 
+angular.module('mean.questions').factory('AnswersResource',
+    ['$resource',
+    function($resource) {
+        return $resource('questions/:questionId/answers/:answerId', {
+            questionId: '@question._id',
+            answerId: '@_id'
+        }, {
+            update: {
+                method: 'PUT'
+            }
+        });
+    }
+]);
+
 angular.module('mean.questions').factory('Questions',
-    ['$q', 'QuestionsResource',
-    function($q, Questions) {
+    ['$q', 'QuestionsResource', 'AnswersResource',
+    function($q, QuestionsResource, AnswersResource) {
         return {
             create: function() {
-                return new Questions({ type: 'text' });
+                return new QuestionsResource({ type: 'text' });
             },
             get: function(id) {
                 var deferred = $q.defer();
 
-                Questions.get({
-                    questionId: id
-                }, function(question) {
-                    deferred.resolve(question);
-                });
+                QuestionsResource
+                    .get({
+                        questionId: id
+                    }, function(question) {
+                        deferred.resolve(question);
+                    }, function() {
+                        deferred.reject('Question does not exist');
+                    });
 
                 return deferred.promise;
             },
             getAll: function() {
                 var deferred = $q.defer();
 
-                Questions.query(function(questions) {
+                QuestionsResource.query(function(questions) {
                     deferred.resolve(questions);
                 });
 
@@ -49,6 +66,14 @@ angular.module('mean.questions').factory('Questions',
             },
             delete: function(question, callback) {
                 question.$delete(callback);
+            },
+            Answers: {
+                create: function() {
+                    return new AnswersResource();
+                },
+                save: function(answer, callback) {
+                    answer.$save(callback);
+                }
             }
         };
     }

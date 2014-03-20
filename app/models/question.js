@@ -1,34 +1,15 @@
-'use strict';
 
 /**
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    _ = require('lodash');
 
 
 /**
- * Question & Answer Schema
+ * Question Schema
  */
-var AnswerSchema = new Schema({
-    created: {
-        type: Date,
-        default: Date.now
-    },
-    content: {
-        type: String,
-        default: '',
-        trim: true
-    },
-    question: {
-        type: Schema.ObjectId,
-        ref: 'Question'
-    },
-    user: {
-        type: Schema.ObjectId,
-        ref: 'User'
-    }
-});
 
 var QuestionSchema = new Schema({
     created: {
@@ -44,8 +25,19 @@ var QuestionSchema = new Schema({
     correctAnswerIndex: Number,
     possibleAnswers: Schema.Types.Mixed,
     answers: [{
-        type: Schema.ObjectId,
-        ref: 'Answer'
+        created: {
+            type: Date,
+            default: Date.now
+        },
+        content: {
+            type: String,
+            default: '',
+            trim: true
+        },
+        user: {
+            type: Schema.ObjectId,
+            ref: 'User'
+        }
     }],
     nominatedBy: [{
         type: Schema.ObjectId,
@@ -57,6 +49,47 @@ var QuestionSchema = new Schema({
         ref: 'User'
     }
 });
+
+
+/**
+ * Methods
+ */
+
+QuestionSchema.methods = {
+
+    /**
+    * Add answer
+    *
+    * @param {User} user
+    * @param {Object} answer
+    * @param {Function} cb
+    * @api private
+    */
+
+    addAnswer: function (user, answer, cb) {
+        this.answers.push({
+            content: answer.content,
+            user: user._id
+        });
+
+        this.save(cb);
+    },
+
+    /**
+    * Remove answer
+    *
+    * @param {answerId} String
+    * @param {Function} cb
+    * @api private
+    */
+
+    removeAnswer: function (answerId, cb) {
+        var index = _.indexOf(this.answers, { _id: answerId });
+        if (~index) this.answers.splice(index, 1);
+        else return cb('not found');
+        this.save(cb);
+    }
+};
 
 /**
  * Virtuals
@@ -76,11 +109,12 @@ QuestionSchema.path('content').validate(function(content) {
  * Statics
  */
 QuestionSchema.statics.load = function(id, cb) {
-    this.findOne({
-        _id: id
-    }).populate('user', 'name firstName lastName email')
-    .populate('answers.user', 'name firstName lastName email').exec(cb);
+    this
+        .findOne({
+            _id: id
+        })
+        .populate('user', 'name firstName lastName email')
+        .exec(cb);
 };
 
-mongoose.model('Answer', AnswerSchema);
 mongoose.model('Question', QuestionSchema);
