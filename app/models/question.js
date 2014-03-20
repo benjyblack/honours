@@ -88,6 +88,28 @@ QuestionSchema.methods = {
         if (~index) this.answers.splice(index, 1);
         else return cb('not found');
         this.save(cb);
+    },
+
+    /**
+    * Update answer
+    *
+    * @param {answerId} String
+    * @param {newAnswer} Answer
+    * @param {Function} cb
+    * @api private
+    */
+
+    updateAnswer: function (newAnswer, cb) {
+        var answerId = newAnswer._id;
+        var self = this;
+
+        this.answers.forEach(function(answer) {
+            if (answer._id.toString() === answerId) {
+                answer.content = newAnswer.content;
+                self.markModified('answers');
+                self.save(cb);
+            }
+        });
     }
 };
 

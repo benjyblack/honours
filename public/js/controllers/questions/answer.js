@@ -15,9 +15,13 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 				$scope.answer = Questions.Answers.create();
 				$scope.answer.user = $scope.global.user;
 
-				question.answers.forEach(function(answer) {
+				$scope.question.answers.forEach(function(answer) {
 					if (answer.user === $scope.global.user._id) {
-						$scope.answer = answer;
+						Questions.Answers
+							.get($scope.question._id, answer._id)
+							.then(function(answer) {
+								$scope.answer = answer;
+							});
 					}
 				});
 			});
@@ -25,8 +29,8 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 		$scope.submit = function() {
 			
 			if (typeof($scope.answer._id) !== 'undefined') {
-				Answers.update($scope.answer, function(answer) {
-					$location.path('questions/' + answer.question._id);
+				Questions.Answers.update($scope.answer, $scope.question._id, function(answer) {
+					$location.path('questions/' + $scope.question._id);
 				});
 			}
 			else {

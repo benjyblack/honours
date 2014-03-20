@@ -71,6 +71,33 @@ angular.module('mean.questions').factory('Questions',
                 create: function() {
                     return new AnswersResource();
                 },
+                get: function(questionId, answerId) {
+                    var deferred = $q.defer();
+
+                    AnswersResource
+                        .get({
+                            questionId: questionId,
+                            answerId: answerId
+                        }, function(answer) {
+                            deferred.resolve(answer);
+                        }, function() {
+                            deferred.reject('Answer does not exist');
+                        });
+
+                    return deferred.promise;
+                },
+                update: function(answer, questionId, callback) {
+                    var answerId = answer._id;
+
+                    AnswersResource
+                        .update({
+                            questionId: questionId,
+                            answerId: answerId
+                        }, answer,
+                        function(answer) {
+                            callback(answer);
+                        });
+                },
                 save: function(answer, callback) {
                     answer.$save(callback);
                 }

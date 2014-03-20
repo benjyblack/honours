@@ -5,7 +5,7 @@
 
 exports.load = function (req, res, next, id) {
 	req.question.answers.forEach(function(answer) {
-        if (answer._id === id) {
+        if (answer._id.toString() === id) {
             req.answer = answer;
         }
     });
@@ -27,6 +27,19 @@ exports.create = function (req, res) {
 	});
 };
 
+/**
+ * Create answer
+ */
+
+exports.update = function (req, res) {
+	var question = req.question;
+	var newAnswer = req.body;
+
+    question.updateAnswer(newAnswer, function (err) {
+		if (err) return res.render('500');
+		res.redirect('/questions/'+ question.id);
+	});
+};
 
 /**
  * Show answer
