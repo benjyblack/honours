@@ -84,10 +84,17 @@ QuestionSchema.methods = {
     */
 
     removeAnswer: function (answerId, cb) {
-        var index = _.indexOf(this.answers, { _id: answerId });
-        if (~index) this.answers.splice(index, 1);
-        else return cb('not found');
-        this.save(cb);
+        var self = this;
+        var index = 0;
+        
+        this.answers.forEach(function(answer) {
+            if(answer._id.toString() === answerId) {
+                self.answers.splice(index, 1);
+                self.markModified('answers');
+                self.save(cb);
+            }
+            index++;
+        });
     },
 
     /**

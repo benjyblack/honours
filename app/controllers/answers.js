@@ -7,10 +7,9 @@ exports.load = function (req, res, next, id) {
 	req.question.answers.forEach(function(answer) {
         if (answer._id.toString() === id) {
             req.answer = answer;
+            next();
         }
     });
-    if (typeof(req.answer) === 'undefined') return next(new Error('Failed to load answer ' + id));
-    next();
 };
 
 /**
@@ -21,9 +20,10 @@ exports.create = function (req, res) {
 	var question = req.question;
 	var user = req.user;
 
-    question.addAnswer(user, req.body, function (err) {
+    question.addAnswer(user, req.body, function (err, question) {
 		if (err) return res.render('500');
-		res.redirect('/questions/'+ question.id);
+		res.location('/questions/' + question._id.toString());
+		res.jsonp(201, question);
 	});
 };
 
@@ -37,7 +37,7 @@ exports.update = function (req, res) {
 
     question.updateAnswer(newAnswer, function (err) {
 		if (err) return res.render('500');
-		res.redirect('/questions/'+ question.id);
+		res.jsonp(200, question);
 	});
 };
 
@@ -55,7 +55,7 @@ exports.destroy = function (req, res) {
 	var question = req.question;
 	question.removeAnswer(req.param('answerId'), function (err) {
 		if (err) res.send(500);
-		res.redirect('/questions/' + question.id);
+		res.jsonp(200, question);
 	});
 };
 

@@ -32,6 +32,7 @@
 				<div class="control-group">
 					<div class="controls">
 						<input type="submit" class="btn" ng-disabled="!answer">
+						<button class="btn btn-danger" ng-show="answer._id" ng-click="delete()">Delete</button>
 					</div>
 				</div>
 			</form>

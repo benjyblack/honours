@@ -26,15 +26,21 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 				});
 			});
 
+		$scope.delete = function() {
+			Questions.Answers.delete($scope.answer, $scope.question._id, function(question) {
+				$location.path('questions/' + question._id);
+			});
+		};
+
 		$scope.submit = function() {
 			
 			if (typeof($scope.answer._id) !== 'undefined') {
-				Questions.Answers.update($scope.answer, $scope.question._id, function(answer) {
-					$location.path('questions/' + $scope.question._id);
+				Questions.Answers.update($scope.answer, $scope.question._id, function(question) {
+					$location.path('questions/' + question._id);
 				});
 			}
 			else {
-				Questions.Answers.save($scope.answer, function(question) {
+				Questions.Answers.save($scope.answer, $scope.question._id, function(question) {
 					$location.path('questions/' + question._id);
 				});
 			}
