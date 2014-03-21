@@ -4,9 +4,9 @@
             <li>
                 <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
-            <li>
-                <a href="#!"><i class="fa fa-question fa-fw"></i> Questions<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
+            <li ng-class="isCollapsed ? '': 'active'">
+                <a ng-click="isCollapsed = !isCollapsed"><i class="fa fa-question fa-fw"></i> Questions<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="isCollapsed">
                     <li>
                         <a href="#!/questions/create">Ask a question</a>
                     </li>

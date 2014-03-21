@@ -5,6 +5,6 @@ angular.module('mean.system').controller('SidebarController',
 	function ($scope, Global) {
 		$scope.global = Global;
 
-		$scope.isCollapsed = false;
+		$scope.isCollapsed = true;
 	}
 ]);

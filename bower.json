@@ -11,5 +11,8 @@
     "angular-bootstrap": "0.7.0",
     "angular-ui-utils": "0.0.4",
     "angular-file-upload": "~0.3.1"
+  },
+  "resolutions": {
+    "angular-bootstrap": "~0.10.0"
   }
 }
