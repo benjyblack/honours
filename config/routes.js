@@ -27,26 +27,26 @@ module.exports = function(app, passport, auth) {
 
     //Admin routes
     var admin = require('../app/controllers/admin');
-    app.post('/admin/import', auth.admin.hasAuthorizationToImport, admin.import);
+    app.post('/admin/import', auth.admin.isAdmin, admin.import);
 
     //Questions Routes
     var questions = require('../app/controllers/questions');
     app.param('questionId', questions.load);
     app.get('/questions', auth.requiresLogin, questions.all);
-    app.post('/questions', auth.question.hasAuthorizationToUpdateQuestions, questions.create);
+    app.post('/questions', auth.requiresLogin, questions.create);
     app.get('/questions/:questionId', auth.requiresLogin, questions.show);
-    app.put('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToUpdateQuestions, questions.update);
-    app.del('/questions/:questionId', auth.requiresLogin, auth.question.hasAuthorizationToUpdateQuestions, questions.destroy);
+    app.put('/questions/:questionId', auth.requiresLogin, auth.question.isOwner, questions.update);
+    app.del('/questions/:questionId', auth.requiresLogin, auth.question.isOwner, questions.destroy);
 
 
     //Answers routes
     var answers = require('../app/controllers/answers');
     app.param('answerId', answers.load);
-    app.get('/questions/:questionId/answers', answers.all);
-    app.post('/questions/:questionId/answers', answers.create);
-    app.get('/questions/:questionId/answers/:answerId', answers.show);
-    app.put('/questions/:questionId/answers/:answerId', answers.update);
-    app.del('/questions/:questionId/answers/:answerId', answers.destroy);
+    app.get('/questions/:questionId/answers', auth.requiresLogin, answers.all);
+    app.post('/questions/:questionId/answers', auth.requiresLogin, answers.create);
+    app.get('/questions/:questionId/answers/:answerId', auth.requiresLogin, answers.show);
+    app.put('/questions/:questionId/answers/:answerId', auth.requiresLogin, auth.question.isOwner, answers.update);
+    app.del('/questions/:questionId/answers/:answerId', auth.requiresLogin, auth.question.isOwner, answers.destroy);
 
 
     //Home route

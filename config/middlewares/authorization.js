@@ -27,8 +27,7 @@ exports.user = {
  * Admin authorizations routing middleware
  */
 exports.admin = {
-    hasAuthorizationToImport: function(req, res, next) {
-        // TODO: Add proper authentication for students
+    isAdmin: function(req, res, next) {
         if (req.user.type !== 'professor') {
             return res.send(401, 'User is not authorized');
         }
@@ -40,10 +39,9 @@ exports.admin = {
  * Question authorizations routing middleware
  */
 exports.question = {
-    hasAuthorizationToUpdateQuestions: function(req, res, next) {
-        // TODO: Add proper authentication for students
-        if (req.user.type !== 'professor' && 0) {
-            return res.send(401, 'User is not authorized');
+    isOwner: function(req, res, next) {
+        if (!req.user._id.equals(req.question._id)) {
+            return res.send(401, 'User is not owner of question');
         }
         next();
     }
