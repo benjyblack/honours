@@ -54,9 +54,6 @@ exports.session = function(req, res) {
  */
 exports.create = function(req, res) {
 
-    // TODO: have a better way of doing this
-    req.body.type = 'student';
-
     var user = new User(req.body);
     var message = null;
 
