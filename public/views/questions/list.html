@@ -6,7 +6,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <div class="list-group">
+                <div class="list-group" ng-show="questions.length > 0">
                     <a data-ng-repeat="question in questions | orderBy: '-nominatedBy.length'" data-ng-href="#!/questions/{{question._id}}" class="list-group-item">
                         {{question.content}}
                         <span class="pull-right text-muted small">
@@ -15,6 +15,7 @@
                     </a>
                 </div>
                 <!-- /.list-group -->
+                <p ng-show="questions.length === 0">No questions have been asked.</p>
             </div>
             <!-- /.panel-body -->
         </div>
