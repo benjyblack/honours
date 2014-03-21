@@ -62,7 +62,6 @@ angular.module('mean').config(['$httpProvider',
 
                     if (status == 401) {
                         window.location = './signin';
-                        return;
                     }
                     return $q.reject(rejection);
                 }
