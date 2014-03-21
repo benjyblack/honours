@@ -4,6 +4,9 @@
 angular.module('mean').config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
+        when('/', {
+            templateUrl: 'views/index.html'
+        }).
         when('/user/profile', {
             templateUrl: 'views/user/profile.html',
             controller: 'UserProfileController'
@@ -41,7 +44,7 @@ angular.module('mean').config(['$routeProvider',
             controller: 'AdminControlsController'
         }).
         otherwise({
-            redirectTo: '/questions/list/professor'
+            redirectTo: '/'
         });
     }
 ]);
@@ -67,5 +70,19 @@ angular.module('mean').config(['$httpProvider',
                 }
             };
         });
+    }
+]);
+
+
+//Enforce client-side authentication
+angular.module('mean').run(['$rootScope', '$location', 'Global',
+    function($rootScope, $location, Global) {
+        $rootScope.$on('$routeChangeStart',
+            function () {
+                if (!Global.authenticated) {
+                    window.location = '/signin';
+                }
+            }
+        );
     }
 ]);
