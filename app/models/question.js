@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -116,6 +115,26 @@ QuestionSchema.methods = {
                 self.markModified('answers');
                 self.save(cb);
             }
+        });
+    },
+
+    addNomination: function(nominator, cb) {
+        this.nominatedBy.push(nominator);
+
+        this.save(cb);
+    },
+
+    removeNomination: function(nominator, cb) {
+        var self = this;
+        var index = 0;
+
+        this.nominatedBy.forEach(function(user) {
+            if (user.toString() === nominator) {
+                self.nominatedBy.splice(index, 1);
+                self.markModified('nominatedBy');
+                self.save(cb);
+            }
+            index++;
         });
     }
 };

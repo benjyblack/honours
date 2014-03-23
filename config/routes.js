@@ -38,6 +38,10 @@ module.exports = function(app, passport, auth) {
     app.put('/questions/:questionId', auth.requiresLogin, auth.question.isOwner, questions.update);
     app.del('/questions/:questionId', auth.requiresLogin, auth.question.isOwner, questions.destroy);
 
+    // Nominations routes
+    var nominations = require('../app/controllers/nominations');
+    app.post('/questions/:questionId/nominations', auth.requiresLogin, nominations.create);
+    app.del('/questions/:questionId/nominations/:userId', auth.requiresLogin, nominations.destroy);
 
     //Answers routes
     var answers = require('../app/controllers/answers');

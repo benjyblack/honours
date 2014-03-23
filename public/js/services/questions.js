@@ -27,9 +27,22 @@ angular.module('mean.questions').factory('AnswersResource',
     }
 ]);
 
+angular.module('mean.questions').factory('NominationsResource',
+    ['$resource',
+    function($resource) {
+        return $resource('questions/:questionId/nominations/:userId', {
+            userId: '@_id'
+        }, {
+            update: {
+                method: 'PUT'
+            }
+        });
+    }
+]);
+
 angular.module('mean.questions').factory('Questions',
-    ['$q', 'QuestionsResource', 'AnswersResource',
-    function($q, QuestionsResource, AnswersResource) {
+    ['$q', 'QuestionsResource', 'AnswersResource', 'NominationsResource',
+    function($q, QuestionsResource, AnswersResource, NominationsResource) {
         return {
             create: function() {
                 return new QuestionsResource({ type: 'text' });
@@ -66,6 +79,28 @@ angular.module('mean.questions').factory('Questions',
             delete: function(question, callback) {
                 question.$delete(callback);
             },
+            Nominations: {
+                add: function(questionId, callback) {
+                    NominationsResource
+                        .save({
+                            questionId: questionId
+                        }, {},
+                        function(question) {
+                            if (typeof(callback) !== 'undefined')
+                                callback(question);
+                        });
+                },
+                remove: function(questionId, userId, callback) {
+                    NominationsResource
+                        .delete({
+                            questionId: questionId,
+                            userId: userId
+                        }, function(question) {
+                            if (typeof(callback) !== 'undefined')
+                                callback(question);
+                        });
+                }
+            },
             Answers: {
                 create: function() {
                     return new AnswersResource();
@@ -92,7 +127,8 @@ angular.module('mean.questions').factory('Questions',
                             answerId: answerId
                         }, answer,
                         function(question) {
-                            callback(question);
+                            if (typeof(callback) !== 'undefined')
+                                callback(question);
                         });
                 },
                 save: function(questionId, answer, callback) {
@@ -101,7 +137,8 @@ angular.module('mean.questions').factory('Questions',
                             questionId: questionId
                         }, answer,
                         function(question) {
-                            callback(question);
+                            if (typeof(callback) !== 'undefined')
+                                callback(question);
                         });
                 },
                 delete: function(questionId, answerId, callback) {
@@ -110,7 +147,8 @@ angular.module('mean.questions').factory('Questions',
                             questionId: questionId,
                             answerId: answerId
                         }, function(question) {
-                            callback(question);
+                            if (typeof(callback) !== 'undefined')
+                                callback(question);
                         });
                 }
             }

@@ -14,14 +14,15 @@ angular.module('mean.questions').controller('QuestionsDetailController',
 
         $scope.nominate = function() {
             if ($scope.isNominatedByMe()) {
-                var index = $scope.question.nominatedBy.indexOf($scope.global.user._id);
-                $scope.question.nominatedBy.splice(index, 1);
+                Questions.Nominations.remove($scope.question._id, $scope.global.user._id, function(question) {
+                    $scope.question = question;
+                });
             }
             else {
-                $scope.question.nominatedBy.push($scope.global.user._id);
+                Questions.Nominations.add($scope.question._id, function(question) {
+                    $scope.question = question;
+                });
             }
-
-            Questions.update($scope.question);
         };
 
         $scope.isNominatedByMe = function() {
