@@ -1,0 +1,4 @@
+Bugs:
+  ☐ Can't nominate a question in current implementation without getting a 401
+  ☐ Word Cloud doesn't always show words if they don't fit
+  ☐ Menu doesn't work when reducing screen size
