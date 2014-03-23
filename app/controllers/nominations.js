@@ -24,3 +24,11 @@ exports.destroy = function (req, res) {
 		res.jsonp(200, question);
 	});
 };
+
+
+/** 
+ * All nominations
+ */
+exports.all = function (req, res) {
+	res.jsonp(req.question.nominatedBy);
+};
