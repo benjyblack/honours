@@ -85,9 +85,7 @@ angular.module('mean.questions').factory('Questions',
 
                     return deferred.promise;
                 },
-                update: function(answer, questionId, callback) {
-                    var answerId = answer._id;
-
+                update: function(questionId, answerId, answer, callback) {
                     AnswersResource
                         .update({
                             questionId: questionId,
@@ -97,7 +95,7 @@ angular.module('mean.questions').factory('Questions',
                             callback(question);
                         });
                 },
-                save: function(answer, questionId, callback) {
+                save: function(questionId, answer, callback) {
                     AnswersResource
                         .save({
                             questionId: questionId
@@ -106,9 +104,7 @@ angular.module('mean.questions').factory('Questions',
                             callback(question);
                         });
                 },
-                delete: function(answer, questionId, callback) {
-                    var answerId = answer._id;
-
+                delete: function(questionId, answerId, callback) {
                     AnswersResource
                         .delete({
                             questionId: questionId,

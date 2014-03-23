@@ -8,7 +8,6 @@
 			$q,
 			QuestionsAnswerController,
 			MockGlobal,
-			MockAnswers,
 			MockQuestions,
 			currentUserId, questionCreatorId, questionId, answerId,
 			sampleQuestion, sampleAnswer, deferredQuestion, deferredAnswer;
@@ -37,6 +36,11 @@
 
 			$routeParams.questionId = questionId;
 
+			sampleAnswer = {
+				content: 'This is an answer',
+				user: { _id : currentUserId },
+			};
+
 			sampleQuestion = {
 				content: 'This is a professor question',
 				type: 'text',
@@ -45,20 +49,9 @@
 					type: 'professor',
 					_id : questionCreatorId
 				},
-				answers: [
-					{
-						_id: answerId
-					}
-				],
+				answers: [sampleAnswer],
 				_id: questionId
 			};
-
-			sampleAnswer = {
-				content: 'This is an answer',
-				user: { _id : currentUserId },
-				question: { _id : questionId }
-			};
-
 
 			deferredQuestion = $q.defer();
 			deferredAnswer = $q.defer();
@@ -70,14 +63,14 @@
 			};
 
 			MockQuestions = {
-				get: jasmine.createSpy('MockQuestions: get()').andReturn(deferredQuestion.promise)
-			};
-
-			MockAnswers = {
-				create: jasmine.createSpy('MockAnswers: create()').andReturn({question: {}}),
-				get: jasmine.createSpy('MockAnswers: get()').andReturn(deferredAnswer.promise),
-				update: jasmine.createSpy('MockAnswers: update()').andCallFake(function(answer, callback) { callback(sampleAnswer); }),
-				save: jasmine.createSpy('MockAnswers: save()').andCallFake(function(answer, callback) { callback(sampleAnswer); })
+				get: jasmine.createSpy('MockQuestions: get()').andReturn(deferredQuestion.promise),
+				Answers: {
+					create: jasmine.createSpy('MockQuestions.Answers: create()').andReturn({}),
+					get: jasmine.createSpy('MockQuestions.Answers: get()').andReturn(deferredAnswer.promise),
+					update: jasmine.createSpy('MockQuestions.Answers: update()').andCallFake(function(questionId, answerId, answer, callback) { callback(sampleQuestion); }),
+					save: jasmine.createSpy('MockQuestions.Answers: save()').andCallFake(function(questionId, answer, callback) { callback(sampleQuestion); }),
+					delete: jasmine.createSpy('MockQuestions.Answers: delete()').andCallFake(function(questionId, answerId, callback) { callback(sampleQuestion); })
+				}
 			};
 		}));
 
@@ -91,76 +84,101 @@
 				QuestionsAnswerController = $controller('QuestionsAnswerController', {
 					$scope: scope,
 					Global: MockGlobal,
-					Questions: MockQuestions,
-					Answers: MockAnswers
+					Questions: MockQuestions
 				});
 
 				scope.$apply();
 
+				expect(MockQuestions.get).toHaveBeenCalledWith(scope.question._id);
+				expect(MockQuestions.Answers.get).toHaveBeenCalledWith(scope.question._id, scope.question.answers[0]._id);
 				expect(scope.answer).toEqualData({
 					content: 'This is an answer',
-					user: { _id : scope.global.user._id },
-					question: { _id : $routeParams.questionId }
+					user: { _id : scope.global.user._id }
 				});
 			})
 		);
 
-		it('MockAnswers.create should be called when Answers promise is rejected and the returned Answer should be given the proper Question and User ID',
+		it('MockQuestions.Answers.create should be called on Controller initialization',
 			inject(function($controller) {
 
 				deferredQuestion.resolve(sampleQuestion);
-				deferredAnswer.reject('Answer doesn\'t exist');
 
 				QuestionsAnswerController = $controller('QuestionsAnswerController', {
 					$scope: scope,
 					Global: MockGlobal,
-					Questions: MockQuestions,
-					Answers: MockAnswers
+					Questions: MockQuestions
 				});
 
 				scope.$apply();
 
-				expect(MockAnswers.create).toHaveBeenCalled();
-				expect(scope.answer.question).toBe(sampleQuestion._id);
-				expect(scope.answer.user).toBe(currentUserId);
+				expect(MockQuestions.Answers.create).toHaveBeenCalled();
 			})
 		);
 
-		it('MockAnswers.update should be called when scope.answer has ID and scope.submit is called',
+		it('MockQuestions.Answers.update should be called when scope.answer has ID and scope.submit is called',
 			inject(function($controller) {
+
+				deferredQuestion.resolve(sampleQuestion);
 
 				QuestionsAnswerController = $controller('QuestionsAnswerController', {
 					$scope: scope,
 					Global: MockGlobal,
-					Questions: MockQuestions,
-					Answers: MockAnswers
+					Questions: MockQuestions
 				});
+
+				scope.$apply();
 
 				scope.answer = { _id: answerId };
 
 				scope.submit();
 
-				expect(MockAnswers.update).toHaveBeenCalled();
-				expect($location.path()).toBe('/questions/' + questionId);
+				expect(MockQuestions.Answers.update)
+					.toHaveBeenCalledWith(scope.question._id, scope.answer._id, scope.answer, jasmine.any(Function));
+				expect($location.path()).toBe('/questions/' + scope.question._id);
 			})
 		);
 
-		it('MockAnswers.save should be called when scope.answer has no ID and scope.submit is called',
+		it('MockQuestions.Answers.save should be called when scope.answer has no ID and scope.submit is called',
 			inject(function($controller) {
+
+				deferredQuestion.resolve(sampleQuestion);
 
 				QuestionsAnswerController = $controller('QuestionsAnswerController', {
 					$scope: scope,
 					Global: MockGlobal,
-					Questions: MockQuestions,
-					Answers: MockAnswers
+					Questions: MockQuestions
 				});
+
+				scope.$apply();
 
 				scope.answer = {};
 
 				scope.submit();
 
-				expect(MockAnswers.save).toHaveBeenCalled();
-				expect($location.path()).toBe('/questions/' + questionId);
+				expect(MockQuestions.Answers.save)
+					.toHaveBeenCalledWith(scope.question._id, scope.answer, jasmine.any(Function));
+				expect($location.path()).toBe('/questions/' + scope.question._id);
+			})
+		);
+
+		it('MockQuestions.Answers.delete should be called with Question and Answer ID and should redirect to Question',
+			inject(function($controller) {
+
+				deferredQuestion.resolve(sampleQuestion);
+				deferredQuestion.resolve(sampleAnswer);
+
+				QuestionsAnswerController = $controller('QuestionsAnswerController', {
+					$scope: scope,
+					Global: MockGlobal,
+					Questions: MockQuestions
+				});
+
+				scope.$apply();
+
+				scope.delete();
+
+				expect(MockQuestions.Answers.delete).toHaveBeenCalledWith(scope.question._id, scope.answer._id, jasmine.any(Function));
+				expect($location.path()).toBe('/questions/' + scope.question._id);
 			})
 		);
 	});

@@ -14,7 +14,7 @@ angular.module('mean.questions').controller('QuestionsEditController',
 				$scope.question = question;
 			});
 		}
-
+		
 		$scope.submit = function() {
 			if ($scope.action === 'create') {
 				Questions.save($scope.question, function(response) {

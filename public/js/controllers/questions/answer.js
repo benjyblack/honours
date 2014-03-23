@@ -13,10 +13,9 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 
 				// Create a new answer for this question. This will be overriden below if one already exits
 				$scope.answer = Questions.Answers.create();
-				$scope.answer.user = $scope.global.user;
 
 				$scope.question.answers.forEach(function(answer) {
-					if (answer.user === $scope.global.user._id) {
+					if (answer.user._id === $scope.global.user._id) {
 						Questions.Answers
 							.get($scope.question._id, answer._id)
 							.then(function(answer) {
@@ -27,7 +26,7 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 			});
 
 		$scope.delete = function() {
-			Questions.Answers.delete($scope.answer, $scope.question._id, function(question) {
+			Questions.Answers.delete($scope.question._id, $scope.answer._id, function(question) {
 				$location.path('questions/' + question._id);
 			});
 		};
@@ -35,12 +34,12 @@ angular.module('mean.questions').controller('QuestionsAnswerController',
 		$scope.submit = function() {
 			
 			if (typeof($scope.answer._id) !== 'undefined') {
-				Questions.Answers.update($scope.answer, $scope.question._id, function(question) {
+				Questions.Answers.update($scope.question._id, $scope.answer._id, $scope.answer, function(question) {
 					$location.path('questions/' + question._id);
 				});
 			}
 			else {
-				Questions.Answers.save($scope.answer, $scope.question._id, function(question) {
+				Questions.Answers.save($scope.question._id, $scope.answer, function(question) {
 					$location.path('questions/' + question._id);
 				});
 			}

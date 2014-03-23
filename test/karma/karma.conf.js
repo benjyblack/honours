@@ -23,7 +23,7 @@ module.exports = function(config) {
             'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
             'public/lib/angular-bootstrap/ui-bootstrap.js',
             'public/lib/angular-ui-utils/modules/route/route.js',
-            'public/lib/miscellaneous/ng-google-chart.js',
+            'public/lib/angular-google-chart/ng-google-chart.js',
             'public/js/*.js',
             'public/js/controllers/*.js',
             'public/js/controllers/questions/*.js',

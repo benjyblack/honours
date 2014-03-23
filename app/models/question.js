@@ -143,6 +143,7 @@ QuestionSchema.statics.load = function(id, cb) {
             _id: id
         })
         .populate('user', 'name firstName lastName email')
+        .populate('answers.user', 'name firstName lastName email')
         .exec(cb);
 };
 
