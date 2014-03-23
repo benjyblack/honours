@@ -72,17 +72,6 @@ module.exports = function(grunt) {
             unit: {
                 configFile: 'test/karma/karma.conf.js'
             }
-        },
-        'node-inspector': {
-            custom: {
-                options: {
-                  'web-port': 1337,
-                  'web-host': 'localhost',
-                  'debug-port': 5857,
-                  'save-live-edit': true,
-                  'stack-trace-limit': 4
-                }
-            }
         }
     });
 
@@ -94,7 +83,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-env');
-    grunt.loadNpmTasks('grunt-node-inspector');
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
