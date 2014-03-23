@@ -41,7 +41,7 @@ module.exports = function(app, passport, auth) {
     // Nominations routes
     var nominations = require('../app/controllers/nominations');
     app.get('/questions/:questionId/nominations', auth.requiresLogin, nominations.all);
-    app.post('/questions/:questionId/nominations', auth.requiresLogin, nominations.create);
+    app.post('/questions/:questionId/nominations', auth.requiresLogin, auth.nomination.isNotOwner, nominations.create);
     app.del('/questions/:questionId/nominations/:userId', auth.requiresLogin, nominations.destroy);
 
     //Answers routes

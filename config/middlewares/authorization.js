@@ -59,3 +59,16 @@ exports.answer = {
         next();
     }
 };
+
+
+/**
+ * Nomination authorizations routing middleware
+ */
+exports.nomination = {
+    isNotOwner: function(req, res, next) {
+        if (req.user._id.equals(req.question.user._id)) {
+            return res.send(401, 'User can not nominate own question');
+        }
+        next();
+    }
+};
