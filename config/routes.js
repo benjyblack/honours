@@ -45,8 +45,8 @@ module.exports = function(app, passport, auth) {
     app.get('/questions/:questionId/answers', auth.requiresLogin, answers.all);
     app.post('/questions/:questionId/answers', auth.requiresLogin, answers.create);
     app.get('/questions/:questionId/answers/:answerId', auth.requiresLogin, answers.show);
-    app.put('/questions/:questionId/answers/:answerId', auth.requiresLogin, auth.question.isOwner, answers.update);
-    app.del('/questions/:questionId/answers/:answerId', auth.requiresLogin, auth.question.isOwner, answers.destroy);
+    app.put('/questions/:questionId/answers/:answerId', auth.requiresLogin, auth.answer.isOwner, answers.update);
+    app.del('/questions/:questionId/answers/:answerId', auth.requiresLogin, auth.answer.isOwner, answers.destroy);
 
 
     //Home route

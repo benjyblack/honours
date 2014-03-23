@@ -40,8 +40,21 @@ exports.admin = {
  */
 exports.question = {
     isOwner: function(req, res, next) {
-        if (!req.user._id.equals(req.question._id)) {
+        if (!req.user._id.equals(req.question.user._id)) {
             return res.send(401, 'User is not owner of question');
+        }
+        next();
+    }
+};
+
+
+/**
+ * Answer authorizations routing middleware
+ */
+exports.answer = {
+    isOwner: function(req, res, next) {
+        if (!req.user._id.equals(req.answer.user._id)) {
+            return res.send(401, 'User is not owner of answer');
         }
         next();
     }
