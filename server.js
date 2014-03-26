@@ -16,6 +16,7 @@ var express = require('express'),
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('./config/config'),
     auth = require('./config/middlewares/authorization'),
+    nodemailer = require('./config/middlewares/nodemailer-wrapper'),
     mongoose = require('mongoose');
 
 //Bootstrap db connection
@@ -48,6 +49,9 @@ require('./config/express')(app, passport, db);
 
 //Bootstrap routes
 require('./config/routes')(app, passport, auth);
+
+//Bootstrap nodemailer
+nodemailer.open();
 
 //Start the app by listening on <port>
 var port = process.env.PORT || config.port;

@@ -1,4 +1,8 @@
 Bugs:
-  ☐ Can't nominate a question in current implementation without getting a 401
-  ☐ Word Cloud doesn't always show words if they don't fit
-  ☐ Menu doesn't work when reducing screen size
+ ☐ Add validation and error messages to Password Reset workflow
+ ☐ Word Cloud doesn't always show words if they don't fit
+ ☐ Menu doesn't work when reducing screen size
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ Can't nominate a question in current implementation without getting a 401 @done (14-03-23 18:55) @project(Bugs)

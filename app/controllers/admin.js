@@ -8,15 +8,7 @@ var mongoose = require('mongoose'),
     randomstring = require('randomstring'),
     User = mongoose.model('User'),
     csv = require('csv'),
-    nodemailer = require('nodemailer'),
-    config = require('../../config/config');
-
-
-// create reusable transport method (opens pool of SMTP connections)
-var smtpTransport = nodemailer.createTransport('SMTP',{
-    service: config.nodemailer.service,
-    auth: config.nodemailer.auth
-});
+    nodemailer = require('../../config/middlewares/nodemailer-wrapper');
 
 /**
  * Import CSV
@@ -81,26 +73,11 @@ exports.import = function(req, res) {
 };
 
 var sendAccountInformationEmail = function(users) {
+    var smtpTransport = nodemailer.getSmtpTransport();
+
     users.forEach(function(user) {
         // setup e-mail data with unicode symbols
-        var mailOptions = {
-            from: config.nodemailer.name + ' <' + config.nodemailer.auth.user + '>', // sender address
-            to: user.email, // list of receivers
-            subject: 'Account Information', // Subject line
-            text: 'Hey ' + user.firstName +
-                ' Welcome to the LectureImprov system. Your account information is as follows:\n\n' +
-                'Username: ' + user.email + '\n' +
-                'Temporary Password: ' + user.password, // plaintext body
-            html:
-                    '<div>' +
-                        '<p>Hey ' + user.firstName + '!</p>' +
-                        '<p>Welcome to the LectureImprov system. Your account information is as follows:</p>' +
-                    '</div>' +
-                    '<div>' +
-                        '<p><b>Username</b>: ' + user.email + '</p>' +
-                        '<p><b>Temporary Password</b>: ' + user.password + '</p>' +
-                    '</div>'
-        };
+        var mailOptions = nodemailer.welcomeTemplate(user);
 
         // send mail with defined transport object
         smtpTransport.sendMail(mailOptions, function(error, response){
@@ -109,9 +86,6 @@ var sendAccountInformationEmail = function(users) {
             }else{
                 console.log('Message sent: ' + response.message);
             }
-
-            // if you don't want to use this transport object anymore, uncomment following line
-            //smtpTransport.close(); // shut down the connection pool, no more messages
         });
     });
 };

@@ -6,6 +6,10 @@ module.exports = function(app, passport, auth) {
     app.get('/signin', users.signin);
     app.get('/signup', users.signup);
     app.get('/signout', users.signout);
+    app.get('/forgot', users.forgotGet);
+    app.post('/forgot', users.forgotPost);
+    app.get('/reset/:token', users.resetGet);
+    app.post('/reset/:token', users.resetPost);
     app.get('/users/me', users.me);
 
     //Setting the local strategy route

@@ -5,7 +5,9 @@
  */
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    crypto = require('crypto'),
+    nodemailer = require('../../config/middlewares/nodemailer-wrapper');
 
 /**
  * Auth callback
@@ -43,10 +45,91 @@ exports.signout = function(req, res) {
 };
 
 /**
+ * Forgot Password
+ */
+exports.forgotGet = function(req, res) {
+    res.render('users/forgot', {
+        title: 'Forgot Password'
+    });
+};
+
+/**
  * Session
  */
 exports.session = function(req, res) {
     res.redirect('/');
+};
+
+
+/**
+ * Forgot Password
+ */
+exports.forgotPost = function(req, res) {
+    crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+
+        User.findOne({ email: req.body.email }, function(err, user) {
+            if (!user) {
+                return res.redirect('/forgot');
+            }
+
+            user.resetPasswordToken = token;
+            user.resetPasswordExpires = Date.now() + 3600000;
+
+            user.save(function() {
+                var smtpTransport = nodemailer.getSmtpTransport();
+
+                var mailOptions = nodemailer.forgottenPasswordTemplate(user.email, req.headers.host, token);
+
+                smtpTransport.sendMail(mailOptions, function() {
+                    res.render('users/forgot-confirm', {
+                        title: 'Email sent'
+                    });
+                });
+            });
+        });
+    });
+};
+
+/**
+ * Reset Password
+ */
+exports.resetGet = function(req, res) {
+    User.findOne(
+        { resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },
+        function(err, user) {
+            if (!user) {
+                res.redirect('/forgot');
+            }
+
+            res.render('users/reset', {
+                user: req.user,
+                token: req.params.token
+            });
+        }
+    );
+ };
+
+exports.resetPost = function(req, res) {
+
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },
+        function(err, user) {
+            if (!user) {
+                return res.redirect('/forgot');
+            }
+
+            user.password = req.body.password;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+
+            user.save(function() {
+                req.logIn(user, function(err) {
+                    if (err) return res.redirect('/forgot');
+                    return res.redirect('/');
+                });
+            });
+        }
+    );
 };
 
 /**

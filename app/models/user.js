@@ -21,7 +21,9 @@ var UserSchema = new Schema({
 	},
 	hashed_password: String,
 	provider: String,
-	salt: String
+	salt: String,
+	resetPasswordToken: String,
+	resetPasswordExpires: Date
 });
 
 /**
