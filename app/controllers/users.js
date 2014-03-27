@@ -22,7 +22,7 @@ exports.authCallback = function(req, res, next) {
 exports.signin = function(req, res) {
     res.render('users/signin', {
         title: 'Signin',
-        message: req.flash('error')
+        message: req.session.error
     });
 };
 
@@ -49,7 +49,8 @@ exports.signout = function(req, res) {
  */
 exports.forgotGet = function(req, res) {
     res.render('users/forgot', {
-        title: 'Forgot Password'
+        title: 'Forgot Password',
+        message: req.session.error
     });
 };
 
@@ -70,6 +71,7 @@ exports.forgotPost = function(req, res) {
 
         User.findOne({ email: req.body.email }, function(err, user) {
             if (!user) {
+                req.session.error = 'No account with that email address exists';
                 return res.redirect('/forgot');
             }
 
@@ -99,6 +101,7 @@ exports.resetGet = function(req, res) {
         { resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },
         function(err, user) {
             if (!user) {
+                req.session.error = 'No account with that email address exists';
                 res.redirect('/forgot');
             }
 
@@ -115,6 +118,7 @@ exports.resetPost = function(req, res) {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },
         function(err, user) {
             if (!user) {
+                req.session.error = 'No account with that email address exists';
                 return res.redirect('/forgot');
             }
 
@@ -124,7 +128,11 @@ exports.resetPost = function(req, res) {
 
             user.save(function() {
                 req.logIn(user, function(err) {
-                    if (err) return res.redirect('/forgot');
+                    if (err) {
+                        req.session.error = err.toString();
+                        return res.redirect('/forgot');
+                    }
+                        
                     return res.redirect('/');
                 });
             });
