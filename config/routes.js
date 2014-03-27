@@ -19,6 +19,7 @@ module.exports = function(app, passport, auth) {
     }), users.session);
 
     //Setting up the users api
+    app.get('/users', auth.requiresLogin, users.all);
     app.post('/users', users.create);
     app.get('/users/:userId', users.show);
     app.post('/users/:userId', users.update);

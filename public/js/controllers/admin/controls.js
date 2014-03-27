@@ -10,6 +10,10 @@ angular.module('mean.admin').controller('AdminControlsController',
 			$scope.menu =
 				[
 					{
+						'title': 'View list of Users',
+						'link': 'admin/userlist',
+						'icon': 'fa-user'
+					}, {
 						'title': 'Import Students from CSV',
 						'link': 'admin/import',
 						'icon': 'fa-upload'

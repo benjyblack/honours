@@ -35,6 +35,10 @@ angular.module('mean').config(['$routeProvider',
             templateUrl: 'views/questions/detail.html',
             controller: 'QuestionsDetailController'
         }).
+        when('/admin/userlist', {
+            templateUrl: 'views/admin/userlist.html',
+            controller: 'AdminUserListController'
+        }).
         when('/admin/import', {
             templateUrl: 'views/admin/import.html',
             controller: 'AdminImportController'
