@@ -20,9 +20,9 @@ module.exports = function(app, passport, auth) {
 
     //Setting up the users api
     app.get('/users', auth.requiresLogin, users.all);
-    app.post('/users', users.create);
-    app.get('/users/:userId', users.show);
-    app.post('/users/:userId', users.update);
+    app.post('/users', auth.requiresLogin, auth.admin.isAdmin, users.create);
+    app.get('/users/:userId', auth.requiresLogin, users.show);
+    app.post('/users/:userId', auth.requiresLogin, users.update);
 
     // TODO: remove this
     app.get('/createProfessor', users.createProfessor);
