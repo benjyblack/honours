@@ -1,6 +1,4 @@
 Todo:
-  ☐ Log all emails being sent out 
-  ☐ Create Users manually
     
 Bugs:
  ☐ Add validation and error messages to Password Reset workflow
@@ -9,6 +7,8 @@ Bugs:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ Log all emails being sent out @done (14-03-27 16:01) @project(Todo)
+ ✔ Create Users manually @done (14-03-27 16:01) @project(Todo)
  ✔ Add ability to see List of Users (Professor) @done (14-03-27 14:23) @project(Todo)
  ✔ Add ability to change password w/o being logged in @done (14-03-27 13:54) @project(Todo)
  ✔ Can't nominate a question in current implementation without getting a 401 @done (14-03-23 18:55) @project(Bugs)
