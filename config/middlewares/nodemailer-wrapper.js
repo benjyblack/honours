@@ -24,7 +24,7 @@ exports.getSmtpTransport = function() {
 
 exports.welcomeTemplate = function(user) {
 	return {
-		from: config.nodemailer.name + ' <' + config.nodemailer.user + '>', // sender address
+		from: config.nodemailer.name + ' <' + config.nodemailer.auth.user + '>', // sender address
 		to: user.email, // list of receivers
 		subject: 'Account Information', // Subject line
 		text: 'Hey ' + user.firstName +

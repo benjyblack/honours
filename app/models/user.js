@@ -5,7 +5,9 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	crypto = require('crypto');
+	crypto = require('crypto'),
+	winston = require('winston'),
+	nodemailer = require('../../config/middlewares/nodemailer-wrapper');
 
 
 /**
@@ -109,6 +111,44 @@ UserSchema.methods = {
 		if (!password || !this.salt) return '';
 		var salt = new Buffer(this.salt, 'base64');
 		return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+	},
+
+	sendWelcomeEmail: function() {
+		var smtpTransport = nodemailer.getSmtpTransport();
+
+        // setup e-mail data with unicode symbols
+        var mailOptions = nodemailer.welcomeTemplate(this);
+
+        // log it out
+        winston.log('info', 'Sending welcome email', mailOptions);
+
+        // send mail with defined transport object
+        smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                console.log(error);
+            }else{
+                console.log('Message sent: ' + response.message);
+            }
+        });
+	},
+
+	sendPasswordResetEmail: function(host) {
+		var smtpTransport = nodemailer.getSmtpTransport();
+
+        // setup e-mail data with unicode symbols
+        var mailOptions = nodemailer.forgottenPasswordTemplate(this.email, host, this.resetPasswordToken);
+
+        // log it out
+        winston.log('info', 'Sending reset password email', mailOptions);
+
+        // send mail with defined transport object
+        smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                console.log(error);
+            }else{
+                console.log('Message sent: ' + response.message);
+            }
+        });
 	}
 };
 

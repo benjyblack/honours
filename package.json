@@ -28,7 +28,6 @@
     "lodash": "~2.4.1",
     "async": "latest",
     "view-helpers": "~0.1.4",
-    "mean-logger": "~0.0.1",
     "forever": "~0.10.11",
     "bower": "~1.2.8",
     "grunt": "~0.4.2",

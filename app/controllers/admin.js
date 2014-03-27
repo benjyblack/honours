@@ -7,8 +7,7 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     randomstring = require('randomstring'),
     User = mongoose.model('User'),
-    csv = require('csv'),
-    nodemailer = require('../../config/middlewares/nodemailer-wrapper');
+    csv = require('csv');
 
 /**
  * Import CSV
@@ -53,8 +52,8 @@ exports.import = function(req, res) {
                 
                 recordsIteratedThrough++;
                 if (recordsIteratedThrough === numRecords) {
-                    // Subscribe successful users asynchronously
-                    sendAccountInformationEmail(successfulUsers);
+                    
+                    user.sendWelcomeEmail();
 
                     if (failedUsers.length === 0) {
                         res.jsonp(201, { message: 'Successfully added ' + numRecords + ' users' });
@@ -69,23 +68,5 @@ exports.import = function(req, res) {
     })
     .on('error', function(error){
         res.jsonp(500, { message: 'Error parsing CSV file: ' + error.message });
-    });
-};
-
-var sendAccountInformationEmail = function(users) {
-    var smtpTransport = nodemailer.getSmtpTransport();
-
-    users.forEach(function(user) {
-        // setup e-mail data with unicode symbols
-        var mailOptions = nodemailer.welcomeTemplate(user);
-
-        // send mail with defined transport object
-        smtpTransport.sendMail(mailOptions, function(error, response){
-            if(error){
-                console.log(error);
-            }else{
-                console.log('Message sent: ' + response.message);
-            }
-        });
     });
 };

@@ -4,7 +4,7 @@
 var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
-    logger = require('mean-logger');
+    winston = require('winston');
 
 /**
  * Main application entry file.
@@ -47,7 +47,7 @@ var app = express();
 //express settings
 require('./config/express')(app, passport, db);
 
-//Bootstrap routes
+//Bootstrap routesl
 require('./config/routes')(app, passport, auth);
 
 //Bootstrap nodemailer
@@ -59,7 +59,7 @@ app.listen(port);
 console.log('Express app started on port ' + port);
 
 //Initializing logger
-logger.init(app, passport, mongoose);
+winston.add(winston.transports.File, { filename: 'app.log' });
 
 //expose app
 exports = module.exports = app;

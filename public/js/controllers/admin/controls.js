@@ -14,6 +14,10 @@ angular.module('mean.admin').controller('AdminControlsController',
 						'link': 'admin/userlist',
 						'icon': 'fa-user'
 					}, {
+						'title': 'Create User',
+						'link': 'admin/create-user',
+						'icon': 'fa-user'
+					}, {
 						'title': 'Import Students from CSV',
 						'link': 'admin/import',
 						'icon': 'fa-upload'

@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     _ = require('lodash'),
     crypto = require('crypto'),
+    randomstring = require('randomstring'),
     nodemailer = require('../../config/middlewares/nodemailer-wrapper');
 
 /**
@@ -79,14 +80,10 @@ exports.forgotPost = function(req, res) {
             user.resetPasswordExpires = Date.now() + 3600000;
 
             user.save(function() {
-                var smtpTransport = nodemailer.getSmtpTransport();
+                user.sendPasswordResetEmail(req.headers.host);
 
-                var mailOptions = nodemailer.forgottenPasswordTemplate(user.email, req.headers.host, token);
-
-                smtpTransport.sendMail(mailOptions, function() {
-                    res.render('users/forgot-confirm', {
-                        title: 'Email sent'
-                    });
+                res.render('users/forgot-confirm', {
+                    title: 'Email sent'
                 });
             });
         });
@@ -142,6 +139,15 @@ exports.create = function(req, res) {
     var user = new User(req.body);
     var message = null;
 
+    // TODO: do this better
+    user.type = 'student';
+
+    // if no password has been defined, add a random one
+    if (typeof(user.password) === 'undefined' || user.password.length <= 0)
+    {
+        user.password = randomstring.generate();
+    }
+
     user.provider = 'local';
     user.save(function(err) {
         if (err) {
@@ -159,10 +165,10 @@ exports.create = function(req, res) {
                 user: user
             });
         }
-        req.logIn(user, function(err) {
-            if (err) return next(err);
-            return res.redirect('/');
-        });
+
+        user.sendWelcomeEmail();
+
+        return res.redirect('/');
     });
 };
 
