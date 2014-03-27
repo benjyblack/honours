@@ -22,7 +22,6 @@
     "jade": "~1.0.2",
     "mongoose": "~3.8.3",
     "connect-mongo": "~0.4.0",
-    "connect-flash": "~0.1.1",
     "crypto": "~0.0.3",
     "passport": "~0.1.18",
     "passport-local": "~0.1.6",
@@ -37,7 +36,8 @@
     "grunt-env": "~0.4.1",
     "csv": "~0.3.7",
     "randomstring": "~1.0.3",
-    "nodemailer": "~0.6.1"
+    "nodemailer": "~0.6.1",
+    "connect-flash": "~0.1.1"
   },
   "devDependencies": {
     "supertest": "latest",
