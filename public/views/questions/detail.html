@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">{{question.content}}</h1>
-            <p ng-hide="question.isAnonymous">Asked by: {{global.user.firstName}} {{global.user.lastName}}</p>
+            <p ng-hide="question.isAnonymous">Asked by: {{question.user.firstName}} {{question.user.lastName}}</p>
         </div>
         <!-- /.col-lg-12 -->
     </div>
