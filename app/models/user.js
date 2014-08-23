@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	crypto = require('crypto'),
-	winston = require('winston'),
+	//winston = require('winston'),
 	nodemailer = require('../../config/middlewares/nodemailer-wrapper');
 
 
@@ -120,7 +120,7 @@ UserSchema.methods = {
         var mailOptions = nodemailer.welcomeTemplate(this);
 
         // log it out
-        winston.log('info', 'Sending welcome email', mailOptions);
+        // winston.log('info', 'Sending welcome email', mailOptions);
 
         // send mail with defined transport object
         smtpTransport.sendMail(mailOptions, function(error, response){
@@ -139,7 +139,7 @@ UserSchema.methods = {
         var mailOptions = nodemailer.forgottenPasswordTemplate(this.email, host, this.resetPasswordToken);
 
         // log it out
-        winston.log('info', 'Sending reset password email', mailOptions);
+        // winston.log('info', 'Sending reset password email', mailOptions);
 
         // send mail with defined transport object
         smtpTransport.sendMail(mailOptions, function(error, response){

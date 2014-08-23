@@ -6,3 +6,4 @@ test/coverage/
 .sublime-grunt.cache
 *.dmp
 *.log
+*.db

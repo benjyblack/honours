@@ -3,8 +3,8 @@
  */
 var express = require('express'),
     fs = require('fs'),
-    passport = require('passport'),
-    winston = require('winston');
+    passport = require('passport');
+    // winston = require('winston');
 
 /**
  * Main application entry file.
@@ -59,7 +59,7 @@ app.listen(port);
 console.log('Express app started on port ' + port);
 
 //Initializing logger
-winston.add(winston.transports.File, { filename: 'app.log' });
+// winston.add(winston.transports.File, { filename: 'app.log' });
 
 //expose app
 exports = module.exports = app;
