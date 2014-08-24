@@ -10,7 +10,7 @@ module.exports = {
     nodemailer: {
 		service: 'Gmail',
 		auth: {
-			user: 'lectureimprov@gmail.com',
+			user: 'lectureimprov2@gmail.com',
 			pass: 'LectureImprov!'
 		},
 		name: 'LectureImprov'
